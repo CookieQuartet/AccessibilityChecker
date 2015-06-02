@@ -1,0 +1,27 @@
+{
+  "name": "AccessibilityChecker",
+  "version": "0.0.0",
+  "homepage": "https://github.com/CookieQuartet/AccessibilityChecker",
+  "authors": [
+    "Martin Maestri <mmaestri@gmail.com>"
+  ],
+  "description": "Accessibility Checker",
+  "main": "index.js",
+  "keywords": [
+    "accessibility",
+    "checker",
+    "mobile",
+    "test"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "~3.9.3"
+  }
+}

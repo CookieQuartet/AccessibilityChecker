@@ -1,0 +1,29 @@
+{
+  "name": "AccessibilityChecker",
+  "version": "0.0.0",
+  "description": "Accessibility Checker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CookieQuartet/AccessibilityChecker.git"
+  },
+  "keywords": [
+    "accessibility",
+    "checker",
+    "test",
+    "mobile"
+  ],
+  "author": "Martin Maestri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CookieQuartet/AccessibilityChecker/issues"
+  },
+  "homepage": "https://github.com/CookieQuartet/AccessibilityChecker",
+  "dependencies": {
+    "antlr4": "^4.5.2",
+    "lodash": "^3.9.3"
+  }
+}
