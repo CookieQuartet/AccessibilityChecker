@@ -23,4 +23,4 @@ bower install
 ### Debug
 En el webstorm, hay que ir a Run->Edit Configurations para crear una configuración de ejecución para checker.js
 
-[run_config](assets/img/run_config.png)
+![](assets/img/run_config.png?raw=true)
