@@ -1,4 +1,3 @@
-/*
 var options = {
   file: 'platform/android/java/test/BeGenerousActivity.java',
   platform: 'android/java/',
@@ -7,10 +6,5 @@ var options = {
   listener: 'JavaListener',
   firstRule: 'compilationUnit'
 };
-*/
 
-var platform = 'android/java';
-var options = require('./platform/' + platform + '/options');
-var srcProc = require('./core/SourceProcessor');
-
-console.log(srcProc(options));
+module.exports = options;
