@@ -32,7 +32,7 @@ function SourceMaker(file, blocks) {
           });
           parent.code = patch(parent);
         }
-      };
+      },
       patch = function(node) {
         var chunks = [],
             offset = node.start,

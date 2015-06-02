@@ -229,7 +229,7 @@ JavaListener.prototype.exitMemberDeclaration = function(ctx) {
 JavaListener.prototype.enterMethodDeclaration = function(ctx) {
 
   var start = ctx.start.start;
-  var stop = ctx.stop.stop;
+  var stop = ctx.stop.stop - 1;
   var originalCode = ctx.start.getInputStream().getText(start, stop);
   var startToken = originalCode.indexOf('{');
   var comment = '\n// esto es un comentario\n';
@@ -239,7 +239,7 @@ JavaListener.prototype.enterMethodDeclaration = function(ctx) {
     code: code,
     start: start,
     stop: stop
-  }
+  };
   this.addBlock(item);
 
 };
