@@ -10,12 +10,12 @@ Metodologías de desarrollo que contemplan aspectos de accesibilidad en disposit
 ```
 npm install -g bower
 ```
-Para configurar dependencias de node: en el directorio fuente, escribir  
+Configurar dependencias de node: en el directorio fuente, escribir  
 
 ```
 npm install
 ```
-Para configurar dependencias de bower: 
+Configurar dependencias de bower: 
 ```
 bower install
 ```
@@ -24,3 +24,9 @@ bower install
 En el webstorm, hay que ir a Run->Edit Configurations para crear una configuración de ejecución para checker.js
 
 ![](assets/img/run_config.png?raw=true)
+
+### Test
+```
+node ./checker.js > test.java
+```
+

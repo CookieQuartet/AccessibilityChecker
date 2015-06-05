@@ -4,6 +4,7 @@ var options = {
   parser: 'JavaParser',
   lexer: 'JavaLexer',
   listener: 'JavaListener',
+  codeRules: 'JavaCodeRules',
   firstRule: 'compilationUnit'
 };
 

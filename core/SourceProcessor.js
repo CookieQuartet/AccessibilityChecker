@@ -7,6 +7,7 @@ function SourceProcessor(options) {
   var Parser = require(platform + options.platform + options.parser);
   var Lexer = require(platform + options.platform + options.lexer);
   var Listener = require(platform + options.platform + options.listener)[options.listener];
+  var codeRules = require(platform + options.platform + options.codeRules);
 
   var file = fs.readFileSync(options.file, "utf8");
   var chars = new antlr4.InputStream(file);
@@ -17,7 +18,7 @@ function SourceProcessor(options) {
   parser.buildParseTrees = true;
 
   var tree = parser[options.firstRule]();
-  var listener = new Listener();
+  var listener = new Listener(codeRules);
 
   antlr4.tree.ParseTreeWalker.DEFAULT.walk(listener, tree);
 
