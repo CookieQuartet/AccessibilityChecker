@@ -1,7 +1,12 @@
 var _ = require('lodash');
+var CodeRules = require('./CodeRules');
 
-function BaseListener() {
-
+function BaseListener(rules) {
+  antlr4.tree.ParseTreeListener.call(this);
+  this._blocks = [];
+  this._index = 0;
+  this.codeRules = new CodeRules(rules);
+  return this;
 }
 
 var antlr4 = require('antlr4/index');
@@ -30,7 +35,7 @@ BaseListener.prototype.clearBlocks = function() {
 
 BaseListener.prototype.getCodeBlock = function(ctx) {
   var start = ctx.start.start,
-      stop = ctx.stop.stop -1;
+      stop = ctx.stop.stop+1;
   return {
       start: start,
       stop: stop,

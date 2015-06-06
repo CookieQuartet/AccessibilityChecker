@@ -5,7 +5,6 @@ function SourceMaker(file, blocks) {
         stop: file.length,
         children: []
       },
-      holder,
       addNode = function(parent, newNode) {
         var ok = false;
         // buscar primero en los hijos del nodo de manera recursiva
@@ -18,6 +17,7 @@ function SourceMaker(file, blocks) {
         // entonces lo "adopta"
         if(!ok) {
           parent.children.push(newNode);
+          console.log('Padre: ', parent.start, parent.stop, 'hijo: ', newNode.start, newNode.stop);
           ok = true;
         }
         return ok;

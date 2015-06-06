@@ -1,4 +1,4 @@
-function SourceProcessor(options) {
+function SourceProcessor(filename, options) {
   var antlr4 = require('antlr4/index');
   var fs = require('fs');
   var SourceMaker = require('./SourceMaker');
@@ -9,7 +9,7 @@ function SourceProcessor(options) {
   var Listener = require(platform + options.platform + options.listener)[options.listener];
   var codeRules = require(platform + options.platform + options.codeRules);
 
-  var file = fs.readFileSync(options.file, "utf8");
+  var file = fs.readFileSync(filename, "utf8");
   var chars = new antlr4.InputStream(file);
   var lexer = new Lexer[options.lexer](chars);
   var tokens  = new antlr4.CommonTokenStream(lexer);

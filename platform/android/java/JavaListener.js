@@ -1,16 +1,11 @@
 // Generated from Java.g4 by ANTLR 4.5
 // jshint ignore: start
-var antlr4 = require('antlr4/index');
 var BaseListener = require('../../../core/BaseListener');
-var CodeRules = require('../../../core/CodeRules');
 
 // This class defines a complete listener for a parse tree produced by JavaParser.
 function JavaListener(rules) {
-	antlr4.tree.ParseTreeListener.call(this);
-  this._blocks = [];
-  this._index = 0;
-  this.codeRules = new CodeRules(rules);
-	return this;
+  BaseListener.call(this, rules);
+  return this;
 }
 
 JavaListener.prototype = Object.create(BaseListener.prototype);
@@ -53,7 +48,11 @@ JavaListener.prototype.enterVariableModifier = function(ctx) {};
 
 JavaListener.prototype.exitVariableModifier = function(ctx) {};
 
-JavaListener.prototype.enterClassDeclaration = function(ctx) {};
+JavaListener.prototype.enterClassDeclaration = function(ctx) {
+  var codeBlock = this.getCodeBlock(ctx);
+  codeBlock.code = this.processCodeRules(codeBlock.code, this.codeRules.getRules('android.class'));
+  this.addBlock(codeBlock);
+};
 
 JavaListener.prototype.exitClassDeclaration = function(ctx) {};
 
@@ -336,6 +335,9 @@ JavaListener.prototype.exitLiteral = function(ctx) {
 
 // Enter a parse tree produced by JavaParser#annotation.
 JavaListener.prototype.enterAnnotation = function(ctx) {
+  var codeBlock = this.getCodeBlock(ctx);
+  codeBlock.code = this.processCodeRules(codeBlock.code, this.codeRules.getRules('android.annotation'));
+  this.addBlock(codeBlock);
 };
 
 // Exit a parse tree produced by JavaParser#annotation.

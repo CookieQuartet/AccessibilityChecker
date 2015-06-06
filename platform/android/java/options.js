@@ -1,5 +1,5 @@
 var options = {
-  file: 'platform/android/java/test/BeGenerousActivity.java',
+  //file: 'platform/android/java/test/BeGenerousActivity.java',
   platform: 'android/java/',
   parser: 'JavaParser',
   lexer: 'JavaLexer',

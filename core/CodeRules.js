@@ -25,7 +25,7 @@ CodeRules.prototype.load = function(rules) {
 };
 
 CodeRules.prototype.getRules = function(type) {
-  return _.chain(this.rules).filter({ type: type }).clone().sortBy(['priority', 'id', 'name']).value();
+  return _.chain(this.rules).filter(function(item) { return item.options.type === type; }).sortBy(['priority', 'id', 'name']).value();
 };
 
 module.exports = CodeRules;
