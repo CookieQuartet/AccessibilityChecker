@@ -19,6 +19,7 @@ BaseListener.prototype.addBlock = function(block) {
   this._blocks.push({
     index: this._index++,
     code: block.code,
+    originalCode: block.originalCode,
     start: block.start,
     stop: block.stop,
     children: []
@@ -35,11 +36,13 @@ BaseListener.prototype.clearBlocks = function() {
 
 BaseListener.prototype.getCodeBlock = function(ctx) {
   var start = ctx.start.start,
-      stop = ctx.stop.stop+1;
+      stop = ctx.stop.stop+ 1,
+      code = ctx.start.getInputStream().getText(start, stop);
   return {
       start: start,
       stop: stop,
-      code: ctx.start.getInputStream().getText(start, stop)
+      code: code,
+      originalCode: code
   }
 };
 
