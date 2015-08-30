@@ -49,9 +49,7 @@ JavaListener.prototype.enterVariableModifier = function(ctx) {};
 JavaListener.prototype.exitVariableModifier = function(ctx) {};
 
 JavaListener.prototype.enterClassDeclaration = function(ctx) {
-  var codeBlock = this.getCodeBlock(ctx);
-  codeBlock.code = this.processCodeRules(codeBlock.code, this.codeRules.getRules('android.class'));
-  this.addBlock(codeBlock);
+  this.processNode(ctx, 'android.class');
 };
 
 JavaListener.prototype.exitClassDeclaration = function(ctx) {};
@@ -109,9 +107,7 @@ JavaListener.prototype.enterMemberDeclaration = function(ctx) {};
 JavaListener.prototype.exitMemberDeclaration = function(ctx) {};
 
 JavaListener.prototype.enterMethodDeclaration = function(ctx) {
-  var codeBlock = this.getCodeBlock(ctx);
-  codeBlock.code = this.processCodeRules(codeBlock.code, this.codeRules.getRules('android.method'));
-  this.addBlock(codeBlock);
+  this.processNode(ctx, 'android.method');
 };
 
 JavaListener.prototype.exitMethodDeclaration = function(ctx) {};
@@ -335,9 +331,7 @@ JavaListener.prototype.exitLiteral = function(ctx) {
 
 // Enter a parse tree produced by JavaParser#annotation.
 JavaListener.prototype.enterAnnotation = function(ctx) {
-  var codeBlock = this.getCodeBlock(ctx);
-  codeBlock.code = this.processCodeRules(codeBlock.code, this.codeRules.getRules('android.annotation'));
-  this.addBlock(codeBlock);
+  this.processNode(ctx, 'android.annotation');
 };
 
 // Exit a parse tree produced by JavaParser#annotation.

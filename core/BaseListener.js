@@ -42,7 +42,8 @@ BaseListener.prototype.getCodeBlock = function(ctx) {
       start: start,
       stop: stop,
       code: code,
-      originalCode: code
+      originalCode: code,
+      ctx: ctx
   }
 };
 
@@ -50,14 +51,29 @@ BaseListener.prototype.loadRules = function(rules) {
   return this.codeRules.load(rules);
 };
 
-BaseListener.prototype.processCodeRules = function(code, rules) {
-  var _code = code;
+BaseListener.prototype.matchRule = function(code, rule) {
+  return true;
+};
+
+BaseListener.prototype.applyRule = function(code, rule) {
+  return rule.apply(code);
+};
+
+BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
+  var _self = this,
+      _code = codeBlock.code;
   _.each(rules, function(rule) {
-    if(rule.match(_code)) {
-      _code = rule.apply(_code);
+    if(_self.matchRule(_code, rule)) {
+      _code = _self.applyRule(_code, rule);
     }
   });
   return _code;
+};
+
+BaseListener.prototype.processNode = function(ctx, ruleCategory) {
+  var codeBlock = this.getCodeBlock(ctx);
+  codeBlock.code = this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory));
+  this.addBlock(codeBlock);
 };
 
 module.exports = BaseListener;
