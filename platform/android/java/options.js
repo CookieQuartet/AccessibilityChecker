@@ -1,6 +1,8 @@
 var options = {
   //file: 'platform/android/java/test/BeGenerousActivity.java',
   platform: 'android/java/',
+  fileExtension: 'java',
+  ignore: ['Application/build/**', 'build/**'],
   parser: 'JavaParser',
   lexer: 'JavaLexer',
   listener: 'JavaListener',
