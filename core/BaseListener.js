@@ -41,7 +41,7 @@ BaseListener.prototype.getCodeBlock = function(ctx) {
   return {
       start: start,
       stop: stop,
-      code: code,
+      code: code, /* the modified code */
       originalCode: code,
       ctx: ctx
   }
@@ -63,8 +63,8 @@ BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
   var _self = this,
       _code = codeBlock.code;
   _.each(rules, function(rule) {
-    if(_self.matchRule(_code, rule)) {
-      _code = _self.applyRule(_code, rule);
+    if(rule.match(_code)) {
+      _code = rule.apply(_code);
     }
   });
   return _code;
