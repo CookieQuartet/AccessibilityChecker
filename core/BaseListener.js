@@ -52,7 +52,7 @@ BaseListener.prototype.loadRules = function(rules) {
 };
 
 BaseListener.prototype.matchRule = function(code, rule) {
-  return true;
+  return rule.match(code);
 };
 
 BaseListener.prototype.applyRule = function(code, rule) {
