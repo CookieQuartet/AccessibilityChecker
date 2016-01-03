@@ -54,8 +54,9 @@ var XMLCodeRules = [
             var valueRegexSingleQuote = /'[^']+'/;
             var valueRegexDoubleQuote = /"[^"]+"/;
 
-            if(widthPosition == -1 && heigthPosition == -1)
+            if(widthPosition == -1 || heigthPosition == -1){
                 return false; //No tiene width ni heigth
+            }
 
             if(widthPosition != -1){
                 widthPosition+=widthString.length;
@@ -65,13 +66,17 @@ var XMLCodeRules = [
                 heigthPosition+=heigthString.length;
             }
 
-            var resultWidth = _code.slice(widthPosition, _code.length).match(valueRegexSingleQuote);
-            if(!resultWidth){
+            if(_code[widthPosition+1] =='\''){
+                var resultWidth = _code.slice(widthPosition, _code.length).match(valueRegexSingleQuote);
+            }
+            else{
                 resultWidth = _code.slice(widthPosition, _code.length).match(valueRegexDoubleQuote);
             }
 
-            var resultHeight = _code.slice(heigthPosition, _code.length).match(valueRegexSingleQuote);
-            if(!resultHeight){
+            if(_code[heigthPosition+1] =='\'') {
+                var resultHeight = _code.slice(heigthPosition, _code.length).match(valueRegexSingleQuote);
+            }
+            else{
                 resultHeight = _code.slice(heigthPosition, _code.length).match(valueRegexDoubleQuote);
             }
 
