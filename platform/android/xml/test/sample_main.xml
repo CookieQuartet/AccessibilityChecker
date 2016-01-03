@@ -49,7 +49,7 @@ limitations under the License.
             <!-- This is a regular, text-based button. No contentDescription is needed, since the
                  text field sufficiently describes the action performed. -->
             <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:text="@string/composeButtonLabel"
                     android:id="@+id/composeButton"
