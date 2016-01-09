@@ -1,6 +1,7 @@
 var parse = require('../../../helper/XMLParserToJson.js');
 var inspect = require('util').inspect;
-var XMLMethods = require('./XMLParseMethods.js');
+var XMLMatchMethods = require('./XMLMatchMethods.js');
+var XMLApplyMethods = require('./XMLApplyMethods.js');
 
 var XMLCodeRules = [
     {
@@ -16,16 +17,15 @@ var XMLCodeRules = [
                 return false;
             }
 
-            var statusMatch = XMLMethods.getAndroidLayoutSize(code);
-            return statusMatch.match;
-
+            return XMLMatchMethods.matchAndroidLayoutSize(code);
         },
-        apply: function(code, ctx) {
-            var obj = parse(code, 2);
-            console.log(inspect(obj, { colors: true, depth: Infinity }));
-            var startToken = code.indexOf('>');
-            var comment = '\n<!-- esto es un comentario de tag -->\n';
-            return code.substring(0, startToken+1) + comment + code.substring(startToken+1, code.length);
+        apply: function(code, applyArray) {
+            var that = this;
+            that.code = code;
+            for(var i=0; i<applyArray.length; i++){
+                that.code = XMLApplyMethods.applyAndroidLayoutSize[applyArray[i].type](that.code, applyArray[i]);
+            }
+            return that.code;
         }
     }
 ];

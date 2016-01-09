@@ -1,5 +1,5 @@
 module.exports = {
-    getAndroidLayoutSize: function(code){
+    matchAndroidLayoutSize: function(code){
         var _code = code.replace(" ", "");
 
         var widthString = "android:layout_width";
@@ -49,39 +49,58 @@ module.exports = {
 
 
         var matchObject = {
-            match:false
+            match:false,
+            applyArray:[]
         };
-        var applyObject = {}; //Lo que devolveremos al apply, falta definir
 
         //Analizo los valores del width
         var widthValue = resultWidth[0].slice(1, resultWidth[0].length-1);
         widthValue = resultWidth[0].match(/\d+/); //Obtengo valores numericos
-        if(widthValue && widthValue[0] < 48){
-            matchObject.match = true;
-            //Trabajar con distintos applyObject que se enviaran a la funcion de apply
-        }
         if(widthValue){
             var widthUnit = resultWidth[0].slice(1, resultWidth[0].length-1).split(widthValue[0])[1];
             if(widthUnit!="dp"){
                 matchObject.match = true;
-                //Trabajar con distintos applyObject que se enviaran a la funcion de apply
+                matchObject.applyArray.push({
+                    type: "noWidthDp",
+                    size: widthValue[0],
+                    unit: widthUnit
+                });
+            }
+            if(widthValue[0] < 48){
+                matchObject.match = true;
+                matchObject.applyArray.push({
+                    type: "widthSize",
+                    quote: widthQuote,
+                    size: widthValue[0]
+                });
             }
         }
 
         //Analizo los valores del heigth
         var heightValue = resultHeight[0].slice(1, resultHeight[0].length-1);
         heightValue = resultHeight[0].match(/\d+/);
-        if(heightValue && heightValue[0] < 48){
-            matchObject.match = true;
-            //Trabajar con distintos applyObject que se enviaran a la funcion de apply
-        }
         if(heightValue){
             var heightUnit = resultHeight[0].slice(1, resultHeight[0].length-1).split(heightValue[0])[1];
             if(heightUnit!="dp"){
                 matchObject.match = true;
-                //Trabajar con distintos applyObject que se enviaran a la funcion de apply
+                matchObject.applyArray.push({
+                    type: "noHeightDp",
+                    size: heightValue[0],
+                    unit: heightUnit
+                });
+            }
+            if(heightValue[0] < 48){
+                matchObject.match = true;
+                matchObject.applyArray.push({
+                    type: "heightSize",
+                    quote: heightQuote,
+                    size: heightValue[0]
+                });
             }
         }
+
+        if(!matchObject.match)
+            delete matchObject.applyArray;
         return matchObject;
     }
 }

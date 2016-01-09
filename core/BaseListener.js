@@ -55,16 +55,18 @@ BaseListener.prototype.matchRule = function(code, rule) {
   return rule.match(code);
 };
 
-BaseListener.prototype.applyRule = function(code, rule) {
-  return rule.apply(code);
+BaseListener.prototype.applyRule = function(code, rule, applyArray) {
+  return rule.apply(code, applyArray);
 };
 
 BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
   var _self = this,
-      _code = codeBlock.code;
+      _code = codeBlock.code,
+      matchRule = {};
   _.each(rules, function(rule) {
-    if(_self.matchRule(_code, rule)) {
-      _code = _self.applyRule(_code, rule);
+    matchRule = _self.matchRule(_code, rule);
+    if(matchRule.match) {
+      _code = _self.applyRule(_code, rule, matchRule.applyArray);
     }
   });
   return _code;
