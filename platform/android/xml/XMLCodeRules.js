@@ -1,41 +1,10 @@
 var parse = require('../../../helper/XMLParserToJson.js');
 var inspect = require('util').inspect;
+var XMLMethods = require('./XMLParseMethods.js');
 
 var XMLCodeRules = [
-        /*
-  {
-    id: 1,
-    priority: 1,
-    name: 'Regla 1',
-    description: 'Regla de prueba de tag',
-    type: 'android.xml.tag',
-    match: function(code) { return true; },
-    apply: function(code, ctx) {
-      var startToken = code.indexOf('>');
-      var comment = '\n<!-- esto es un comentario de tag -->\n';
-      return code.substring(0, startToken+1) + comment + code.substring(startToken+1, code.length);
-    }
-  },
-  {
-    id: 2,
-    priority: 1,
-    name: 'Regla 1',
-    description: 'Regla de prueba de tag',
-    type: 'android.xml.tag',
-    match: function(code) {
-      return true;
-    },
-    apply: function(code, ctx) {
-      var obj = parse(code, 2);
-      console.log(inspect(obj, { colors: true, depth: Infinity }));
-      var startToken = code.indexOf('>');
-      var comment = '\n<!-- esto es un comentario de tag -->\n';
-      return code.substring(0, startToken+1) + comment + code.substring(startToken+1, code.length);
-    }
-  },
-    */
     {
-        id: 3,
+        id: 1,
         priority: 1,
         name: 'Regla tamaño de button',
         description: 'Prueba del tamaño del button sea superior',
@@ -47,54 +16,9 @@ var XMLCodeRules = [
                 return false;
             }
 
-            var widthString = "android:layout_width";
-            var heigthString = "android:layout_height";
-            var widthPosition = _code.indexOf(widthString);
-            var heigthPosition = _code.indexOf(heigthString);
-            var valueRegexSingleQuote = /'[^']+'/;
-            var valueRegexDoubleQuote = /"[^"]+"/;
+            var statusMatch = XMLMethods.getAndroidLayoutSize(code);
+            return statusMatch.match;
 
-            if(widthPosition == -1 || heigthPosition == -1){
-                return false; //No tiene width ni heigth
-            }
-
-            if(widthPosition != -1){
-                widthPosition+=widthString.length;
-            }
-
-            if(heigthPosition != -1){
-                heigthPosition+=heigthString.length;
-            }
-
-            if(_code[widthPosition+1] =='\''){
-                var resultWidth = _code.slice(widthPosition, _code.length).match(valueRegexSingleQuote);
-            }
-            else{
-                resultWidth = _code.slice(widthPosition, _code.length).match(valueRegexDoubleQuote);
-            }
-
-            if(_code[heigthPosition+1] =='\'') {
-                var resultHeight = _code.slice(heigthPosition, _code.length).match(valueRegexSingleQuote);
-            }
-            else{
-                resultHeight = _code.slice(heigthPosition, _code.length).match(valueRegexDoubleQuote);
-            }
-
-            if(resultWidth){
-                var widthValue = resultWidth[0].match(/\d+/);
-                if(widthValue && widthValue[0] < 48){
-                    return true
-                }
-            }
-
-            if(resultHeight){
-                var heightValue = resultHeight[0].match(/\d+/);
-                if(heightValue && heightValue[0] < 48){
-                    return true
-                }
-            }
-
-            return false;
         },
         apply: function(code, ctx) {
             var obj = parse(code, 2);
