@@ -1,7 +1,5 @@
-var parse = require('../../../helper/XMLParserToJson.js');
-var inspect = require('util').inspect;
-var XMLMatchMethods = require('./XMLMatchMethods.js');
-var XMLApplyMethods = require('./XMLApplyMethods.js');
+var XMLMatchMethods = require('./helper/XMLMatchMethods.js');
+var XMLApplyMethods = require('./helper/XMLApplyMethods.js');
 
 var XMLCodeRules = [
     {

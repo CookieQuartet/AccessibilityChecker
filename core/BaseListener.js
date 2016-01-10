@@ -65,7 +65,7 @@ BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
       matchRule = {};
   _.each(rules, function(rule) {
     matchRule = _self.matchRule(_code, rule);
-    if(matchRule.match) {
+    if(matchRule && matchRule.match) {
       _code = _self.applyRule(_code, rule, matchRule.applyArray);
     }
   });
