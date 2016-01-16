@@ -1,4 +1,4 @@
-var _ = require('loadash');
+var _ = require('lodash');
 var XMLConstants = require('./XMLConstants.js');
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
     },
 
     getUnitsValueFromParameter: function (parameter) {
-        if (getNumericValueFromParameter(parameter) != null){
+        if (this.getNumericValueFromParameter(parameter) != null){
             var unit = parameter.slice(parameter.length-2, parameter.length);
             if (_.has(_.invert(XMLConstants.UNITS), unit)) {
                 return unit
@@ -56,5 +56,7 @@ module.exports = {
     getIndexOfParameter: function (code, parameter) {
         return code.indexOf(parameter);
     },
+
+
 
 }
