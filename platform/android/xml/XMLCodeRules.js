@@ -10,7 +10,7 @@ var XMLCodeRules = [
         name: 'Regla tamaño de button',
         description: 'Prueba del tamaño del button sea superior',
         type: 'android.xml.tag',
-        match: function(code) {
+        match: function(code, mode) {
 
             if (!XMLHelper.verifyFirstElement(code, XMLConstants.TAGS.BUTTON)) {
                 return false;

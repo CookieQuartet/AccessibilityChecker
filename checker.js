@@ -9,17 +9,19 @@ var _ = require('lodash'),
     fs = require('fs'),
     srcProc = require('./core/SourceProcessor'),
     argIndex = {
-      platform: process.argv.indexOf('-p') + 1,
-      project: process.argv.indexOf('-x') + 1
+        platform: process.argv.indexOf('-p') + 1,
+        project: process.argv.indexOf('-x') + 1,
+        mode: process.argv.indexOf('-m') + 1
     },
     platform = argIndex.platform > 0 ? process.argv[argIndex.platform]  : 'android',
     project = argIndex.project > 0 ? process.argv[argIndex.project] : '';
+    global.mode = argIndex.mode > 0 ? process.argv[argIndex.mode] : 1;
 
 //----------------------------------------------------------------------------------------------------------------
 if(argIndex.platform > 0) {
-  console.log('Plataforma: ', process.argv[argIndex.platform]);
+    console.log('Plataforma: ', process.argv[argIndex.platform]);
 } else {
-  console.log('Plataforma: android (default)');
+    console.log('Plataforma: android (default)');
 }
 //----------------------------------------------------------------------------------------------------------------
 if(project.length > 0) {
@@ -51,7 +53,7 @@ if(project.length > 0) {
             var output;
             _.each(files, function(filename) {
               try {
-                output = srcProc(opts.cwd + '/' + filename, cfg);
+                output = srcProc(opts.cwd + '/' + filename, cfg, mode);
                 console.log(output);
               } catch(e) {
                 console.log(filename);

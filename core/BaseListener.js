@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var CodeRules = require('./CodeRules');
 
-function BaseListener(rules) {
+function BaseListener(rules, mode) {
   antlr4.tree.ParseTreeListener.call(this);
   this._blocks = [];
   this._index = 0;
@@ -37,13 +37,16 @@ BaseListener.prototype.clearBlocks = function() {
 BaseListener.prototype.getCodeBlock = function(ctx) {
   var start = ctx.start.start,
       stop = ctx.stop.stop+ 1,
-      code = ctx.start.getInputStream().getText(start, stop);
+      code = ctx.start.getInputStream().getText(start, stop),
+      startLine = ctx.start.line,
+      stopLine = ctx.stop.line;
   return {
     start: start,
     stop: stop,
     code: code,
     originalCode: code,
-    ctx: ctx
+    startLine: startLine,
+    stopLine: stopLine
   }
 };
 
@@ -52,7 +55,7 @@ BaseListener.prototype.loadRules = function(rules) {
 };
 
 BaseListener.prototype.matchRule = function(code, rule) {
-  return rule.match(code);
+  return rule.match(code, mode);
 };
 
 BaseListener.prototype.applyRule = function(code, rule, applyArray) {
@@ -65,9 +68,7 @@ BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
       matchRule = {};
   _.each(rules, function(rule) {
     matchRule = _self.matchRule(_code, rule);
-    if(matchRule && !matchRule.err) {
-      _code = _self.applyRule(_code, rule, matchRule.applyArray);
-    }
+      //_code = _self.applyRule(_code, rule, matchRule.applyArray);
   });
   return _code;
 };
