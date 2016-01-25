@@ -15,7 +15,8 @@ var _ = require('lodash'),
     },
     platform = argIndex.platform > 0 ? process.argv[argIndex.platform]  : 'android',
     project = argIndex.project > 0 ? process.argv[argIndex.project] : '';
-    global.mode = argIndex.mode > 0 ? process.argv[argIndex.mode] : 1;
+
+global.mode = argIndex.mode > 0 ? process.argv[argIndex.mode] : 1;
 
 //----------------------------------------------------------------------------------------------------------------
 if(argIndex.platform > 0) {

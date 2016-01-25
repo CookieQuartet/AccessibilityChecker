@@ -50,32 +50,35 @@ BaseListener.prototype.getCodeBlock = function(ctx) {
   }
 };
 
-BaseListener.prototype.loadRules = function(rules) {
-  return this.codeRules.load(rules);
-};
-
-BaseListener.prototype.matchRule = function(code, rule) {
-  return rule.match(code, mode);
-};
-
-BaseListener.prototype.applyRule = function(code, rule, applyArray) {
-  return rule.apply(code, applyArray);
+BaseListener.prototype.processRule = function(code, line, rule) {
+  return rule.action(code, line);
 };
 
 BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
   var _self = this,
-      _code = codeBlock.code,
-      matchRule = {};
+      _analyzeResult = [],
+      _code = codeBlock.code;
+
   _.each(rules, function(rule) {
-    matchRule = _self.matchRule(_code, rule);
-      //_code = _self.applyRule(_code, rule, matchRule.applyArray);
+     var processResult = _self.processRule(_code,  codeBlock.startLine, rule);
+
+    if (processResult) {
+      _analyzeResult.push(processResult.analyzeResult);
+      _code = processResult.code;
+    }
+
   });
-  return _code;
+
+  return {
+    analyzeResult : _analyzeResult,
+    code: _code
+  };
+
 };
 
 BaseListener.prototype.processNode = function(ctx, ruleCategory) {
-  var codeBlock = this.getCodeBlock(ctx);
-  codeBlock.code = this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory));
+  var codeBlock = this.getCodeBlock(ctx); //TODO: AGREGAR FILE NAME
+  codeBlock.code = this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory)); //TODO: CAMBIAR ACA
   this.addBlock(codeBlock);
 };
 
