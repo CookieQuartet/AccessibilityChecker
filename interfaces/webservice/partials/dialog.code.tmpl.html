@@ -1,0 +1,25 @@
+<md-dialog aria-label="Mango (Fruit)"  ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{ data.name }}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="close()">
+                    <ng-md-icon icon="close" style="fill: white"></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <!--<textarea name="" id="ac-file-content">{{ data.content }}</textarea>-->
+                <!--<pre id="ac-file-content" flex><code hjls>{{ data.content }}</code></pre>-->
+                <div id="ac-file-content" flex hljs source="data.content" line-numbers="true" language="{{ data.extension }}"></div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="close()" style="margin-right:20px;">
+                Cerrar
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

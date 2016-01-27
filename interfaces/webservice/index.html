@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="accessibilityChecker">
+<head>
+    <meta charset="UTF-8">
+    <title>AccessibilityChecker</title>
+    <link rel="stylesheet" href="angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="angular-material/angular-material.layouts.css"/>
+    <link rel="stylesheet" href="angular-material-icons/angular-material-icons.css"/>
+    <link rel="stylesheet" href="styles/styles.css"/>
+    <link rel="stylesheet" href="highlight.js/styles/xcode.css">
+    <script src="angular/angular.js"></script>
+</head>
+<body>
+    <div class="ac" ng-controller="ContentController" ng-cloak>
+        <div layout="column" layout-padding layout-wrap layout-fill layout layout-align="center center" class="ac-content">
+            <md-whiteframe class="ac-frame-height md-whiteframe-2dp" flex-sm="80" flex-gt-sm="80" flex-gt-md="80" layout="row" layout-align="left center">
+                <img src="img/accessibility_stamp.png" alt="Accessibility logo" style="width: 70px; height: 70px;">
+                <md-container layout="column" layout-align="left center">
+                    <h2 style="padding: 15px 10px 0;margin: 0;line-height: 15px;" flex="" class="flex">Accessibility Checker</h2>
+                    <h3 style="padding-left:10px;margin: 0;line-height: 15px;" flex="" class="flex">Interface web</h3>
+                </md-container>
+            </md-whiteframe>
+            <md-whiteframe class="ac-project-config ac-frame-height md-whiteframe-2dp" flex-sm="80" flex-gt-sm="80" flex-gt-md="80" layout="row" layout-align="left center">
+                <md-container layout="row" layout-align="left center" flex="60">
+                    <md-container layout="row" layout-align="left center" flex dropzone class="ac-clickable">
+                        <md-tooltip md-direction="bottom">Arrastra un proyecto en esta área para seleccionarlo</md-tooltip>
+                        <md-input-container flex>
+                            <label>Proyecto</label>
+                            <input type="text" ng-model="data.project" readonly>
+                        </md-input-container>
+                    </md-container>
+                    <md-button class="md-fab" aria-label="Seleccionar proyecto" ng-click="methods.pickProject()">
+                        <md-tooltip md-direction="bottom">Selecciona un proyecto</md-tooltip>
+                        <ng-md-icon icon="folder" style="fill: white"></ng-md-icon>
+                    </md-button>
+                </md-container>
+                <md-container flex="30" layout="row" layout-align="center center">
+                    <md-input-container class="ac-platform-selector">
+                        <label>Plataforma</label>
+                        <md-tooltip md-direction="bottom">Selecciona la plataforma con la que vas a trabajar</md-tooltip>
+                        <md-select ng-model="data.platform">
+                            <md-optgroup label="Plataformas">
+                                <md-option
+                                    ng-value="platform.name"
+                                    ng-repeat="platform in data.platforms | filter: { category: 'platform' }">{{ platform.name }}</md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="ac-profile-selector">
+                        <label>Perfil</label>
+                        <md-tooltip md-direction="bottom">Selecciona el perfil que quieres aplicar</md-tooltip>
+                        <md-select ng-model="data.profile">
+                            <md-optgroup label="Perfiles">
+                                <md-option
+                                    ng-value="profile.name"
+                                    ng-repeat="profile in data.profiles | filter: { category: 'profile' }">{{ profile.name }}</md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </md-container>
+                <md-button class="md-fab md-primary" aria-label="Analizar" ng-click="methods.analyze()" ng-disabled="!data.analyzable">
+                    <md-tooltip md-direction="bottom">Analizar el proyecto seleccionado</md-tooltip>
+                    <ng-md-icon icon="search" style="fill: white;"></ng-md-icon>
+                </md-button>
+            </md-whiteframe>
+            <md-whiteframe class="ac-results-list-container md-whiteframe-2dp ac-results-list" flex-sm="80" flex-gt-sm="80" flex-gt-md="80" layout="column">
+                <md-subheader class="md-no-sticky">Problemas encontrados</md-subheader>
+                <md-divider></md-divider>
+                <md-progress-linear md-mode="indeterminate" ng-show="data.running"></md-progress-linear>
+                <md-content class="ac-empty-message" layout="row" layout-align="center center" ng-if="data.items.length < 1 && !data.running">
+                    <span flex="50" style="text-align: center;">La lista de archivos aparece aquí</span>
+                </md-content>
+                <md-content layout-padding flex ng-if="data.items.length > 0">
+                    <md-list class="ac-results-list" flex>
+                        <md-list-item class="md-3-line" ng-repeat="item in data.items">
+                            <div class="md-list-item-text" layout="row">
+                                <div flex="5" style="min-width: 60px;">
+                                    <div>
+                                        <img
+                                            alt="{{ 'img/' + item.extension + '-small.png' }}"
+                                            ng-src="{{ 'img/' + item.extension + '-small.png' }}"
+                                            class="md-avatar"
+                                            ng-click="methods.showCode($event, item)"/>
+                                        <md-tooltip md-direction="right">{{ item.fullPath }}</md-tooltip>
+                                    </div>
+                                </div>
+                                <div flex="95" layout="column">
+                                    <h3 flex class="ac-bold">{{ item.file }}</h3>
+                                    <p flex>{{ "Línea: "+ item.line }}</p>
+                                    <p flex>{{ item.description }}</p>
+                                    <div hljs source="item.snippet" language="{{ item.extension }}"></div>
+                                </div>
+                                <md-checkbox class="md-secondary" ng-model="item.selected"></md-checkbox>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </md-whiteframe>
+            <md-whiteframe ng-show="data.items.length > 0" class="ac-buttonpad" flex-sm="80" flex-gt-sm="80" flex-gt-md="80" layout="row" layout-align="end center" layout-wrap>
+                <md-button class="md-raised ac-select-none-button" ng-click="methods.selectNone()">Ninguno</md-button>
+                <md-button class="md-raised ac-select-all-button" ng-click="methods.selectAll()">Todos</md-button>
+                <md-button class="md-raised md-primary ac-apply-button">Aplicar los cambios</md-button>
+            </md-whiteframe>
+        </div>
+    </div>
+</body>
+</html>
+<script src="lodash/lodash.js"></script>
+
+<script src="highlight.js/lib/highlight.min.js"></script>
+<script src="highlightjs-line-numbers.js/src/highlightjs-line-numbers.js"></script>
+<script src="angular-highlightjs/angular-highlightjs.js"></script>
+
+<script src="angular-animate/angular-animate.js"></script>
+<script src="angular-aria/angular-aria.js"></script>
+<script src="angular-messages/angular-messages.js"></script>
+<script src="angular-material/angular-material.js"></script>
+<script src="angular-material-icons/angular-material-icons.js"></script>
+<script src="ng-socket/ngSocket.js"></script>
+
+<script src="js/service.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/directives.js"></script>
+<script src="js/services.js"></script>
+
