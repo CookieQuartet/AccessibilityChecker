@@ -22,7 +22,7 @@ module.exports = {
         return parameter ? parameter[0] : null;
     },
 
-    getUnitsValueFromParameter: function (parameter) {
+    getUnitValueFromParameter: function (parameter) {
         if (this.getNumericValueFromParameter(parameter) != null){
             var unit = parameter.slice(parameter.length-2, parameter.length);
             if (_.has(_.invert(XMLConstants.UNITS), unit)) {
@@ -42,6 +42,8 @@ module.exports = {
 
     replaceParameterValue: function (code, parameter, value) {
 
+        //TODO REVISAR ESTO
+
         var quote = code
 
         var parameterIndexOf = code.indexOf(parameter);
@@ -51,6 +53,14 @@ module.exports = {
         }
 
         return code.replace(parameter+applyObject.quote+applyObject.size, value);
+    },
+
+    replaceNumericParameterValue: function (code, parameter, numericValue) {
+        //TODO
+    },
+
+    replaceUnitParameterValue: function (code, parameter, unit) {
+        //TODO
     },
 
     getIndexOfParameter: function (code, parameter) {

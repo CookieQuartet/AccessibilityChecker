@@ -3,9 +3,9 @@ var CodeRules = require('./CodeRules');
 
 function BaseListener(rules, mode) {
   antlr4.tree.ParseTreeListener.call(this);
-  this._blocks = [];
-  this._index = 0;
   this.codeRules = new CodeRules(rules);
+  this._accessibilityCheckerResult = [];
+
   return this;
 }
 
@@ -15,23 +15,14 @@ BaseListener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
 
 BaseListener.prototype.constructor = BaseListener;
 
-BaseListener.prototype.addBlock = function(block) {
-  this._blocks.push({
-    index: this._index++,
-    code: block.code,
-    originalCode: block.originalCode,
-    start: block.start,
-    stop: block.stop,
-    children: []
-  });
+BaseListener.prototype.addNodeResult = function(nodeResult) {
+  if (nodeResult) {
+    _accessibilityCheckerResult.push(nodeResult);
+  }
 };
 
-BaseListener.prototype.getBlocks = function() {
-  return this._blocks;
-};
-
-BaseListener.prototype.clearBlocks = function() {
-  this._blocks = [];
+BaseListener.prototype.getAccessibilityCheckerResult = function() {
+  return this._accessibilityCheckerResult;
 };
 
 BaseListener.prototype.getCodeBlock = function(ctx) {
@@ -56,30 +47,22 @@ BaseListener.prototype.processRule = function(code, line, rule) {
 
 BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
   var _self = this,
-      _analyzeResult = [],
-      _code = codeBlock.code;
+      _result = [];
 
   _.each(rules, function(rule) {
-     var processResult = _self.processRule(_code,  codeBlock.startLine, rule);
+     var processResult = _self.processRule(codeBlock.code,  codeBlock.startLine, rule);
 
     if (processResult) {
-      _analyzeResult.push(processResult.analyzeResult);
-      _code = processResult.code;
+      _result.push(processResult.analyzeResult);
     }
-
   });
 
-  return {
-    analyzeResult : _analyzeResult,
-    code: _code
-  };
-
+  return _result;
 };
 
 BaseListener.prototype.processNode = function(ctx, ruleCategory) {
-  var codeBlock = this.getCodeBlock(ctx); //TODO: AGREGAR FILE NAME
-  codeBlock.code = this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory)); //TODO: CAMBIAR ACA
-  this.addBlock(codeBlock);
+  var codeBlock = this.getCodeBlock(ctx);
+  this.addNodeResult(this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory)));
 };
 
 module.exports = BaseListener;

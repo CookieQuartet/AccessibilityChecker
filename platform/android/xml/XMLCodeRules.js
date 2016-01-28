@@ -1,5 +1,4 @@
-var XMLMatchMethods = require('./helper/XMLRuleActions.js');
-var XMLApplyMethods = require('./helper/XMLApplyMethods.js');
+var XMLRuleActions = require('./helper/XMLRuleActions.js');
 var XMLConstants = require('./helper/XMLConstants.js');
 var XMLHelper = require('./helper/XMLHelper.js');
 
@@ -15,7 +14,7 @@ var XMLCodeRules = [
                 return false;
             }
 
-            return XMLMatchMethods.analyzeAndroidLayoutSize(code, line, 48, 48, XMLConstants.UNITS.DP, this.id);
+            return XMLRuleActions.analyzeAndroidLayoutSize(code, line, 48, 48, XMLConstants.UNITS.DP);
         }
     }
 ];

@@ -1,11 +1,12 @@
 var XMLHelper = require('./XMLHelper.js');
 var XMLConstants = require('./XMLConstants.js');
-var constants = require('../../../../constants.js');
 
 var _ = require('lodash');
 
 module.exports = {
-    analyzeAndroidLayoutSize: function(code, line, minWidth, minHeigth, recommendedUnit, ruleId) {
+    analyzeAndroidLayoutSize: function(code, line, minWidth, minHeigth, recommendedUnit) {
+        var originalCode = code;
+
         var width = XMLHelper.getParameterValue(code, XMLConstants.PARAMETERS.LAYOUT_WIDTH);
         var height = XMLHelper.getParameterValue(code, XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
 
@@ -17,52 +18,46 @@ module.exports = {
         var numericWidthValue = XMLHelper.getNumericValueFromParameter(width);
         var numericHeightValue = XMLHelper.getNumericValueFromParameter(height);
 
-        var analyzeResult = [];
+        var result = [];
 
         if (numericWidthValue) {
-            var widthUnit = XMLHelper.getUnitsValueFromParameter(width);
+            var widthUnit = XMLHelper.getUnitValueFromParameter(width);
             if (widthUnit != recommendedUnit) {
-                if (mode == constants.MODE.ANALYZE) {
-                    analyzeResult.push(this.resultItem(code, line, "La unidad recomendada es " + recommendedUnit, ruleId));
-                }
+                code = XMLHelper.replaceUnitParameterValue(code, width, recommendedUnit);
+                analyzeResult.push(this.resultItem(originalCode, code, line, "La unidad recomendada es " + recommendedUnit));
             }
             else {
                 if (parseInt(numericWidthValue) < minWidth) {
-                    if (mode == constants.MODE.ANALYZE) {
-                        analyzeResult.push(this.resultItem(code, line, "El ancho minimo recomendado es " + minWidth, ruleId));
-                    }
-
+                    code = XMLHelper.replaceNumericParameterValue(code, width, minWidth);
+                    analyzeResult.push(this.resultItem(originalCode, code, line, "El ancho minimo recomendado es " + minWidth));
                 }
             }
         }
 
         if (numericHeightValue) {
-            var heightUnit = XMLHelper.getUnitsValueFromParameter(height);
+            var heightUnit = XMLHelper.getUnitValueFromParameter(height);
             if (heightUnit != recommendedUnit) {
-                analyzeResult.push(this.resultItem(code, line, "La unidad recomendada es " + recommendedUnit, ruleId));
+                code = XMLHelper.replaceUnitParameterValue(code, height, recommendedUnit);
+                analyzeResult.push(this.resultItem(originalCode, code, line, "La unidad recomendada es " + recommendedUnit));
             }
             else {
                 if (parseInt(numericHeightValue) < minHeigth) {
-                    if (mode == constants.MODE.ANALYZE){
-                        analyzeResult.push(this.resultItem(code, line, "La altura minima recomendada es " + minHeigth, ruleId));
-                    }
+                    code = XMLHelper.replaceNumericParameterValue(code, height, minHeigth);
+                    analyzeResult.push(this.resultItem(originalCode, code, line, "La altura minima recomendada es " + minHeigth));
                 }
             }
         }
 
-        return {
-            code: code,
-            analyzeResult: analyzeResult
-        }
+        return result;
     },
 
-    resultItem : function (code, line, error, id) {
+    resultItem : function (originalCode, code, line, error) {
 
         return {
+            originalCode: originalCode,
             code: code,
             line: line,
-            error: error,
-            ruleId: id
+            error: error
         }
     }
 
