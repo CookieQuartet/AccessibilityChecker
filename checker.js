@@ -26,7 +26,7 @@ if(argIndex.servicePort > 0) {
   console.info('El resto de los parámetros es ignorado');
   // iniciar el servicio web
   // ...
-  var server = require('./core/Webservice')(servicePort);
+  var server = require('./interfaces/webservice/js/server/Webservice')(servicePort);
 
 } else {
 //----------------------------------------------------------------------------------------------------------------

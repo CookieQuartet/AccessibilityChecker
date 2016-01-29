@@ -6,7 +6,7 @@ function Webservice(_port) {
   var web_port = _port || normalizePort(process.env.PORT || '3000');
   var socket_port = 3001;
 
-  var helperSocketConnection = require('./SocketConnection.js');
+  var helperSocketConnection = require('./../../../../core/SocketConnection.js');
 
   app.use(express.static(path.join(__dirname, '../assets')));
   app.use(express.static(path.join(__dirname, '../interfaces/webservice')));

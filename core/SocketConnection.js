@@ -7,12 +7,12 @@ function SocketConnection(io) {
     //-----------------------------------------------------------------------------------------
     io.on('connection', function (socket) {
       //-----------------------------------------------------------------------------------------
-      // emitir
-      socket.emit('event', {message: 'hi'});
+      socket.on('ac:socket:analyze', function (data) {
+        socket.emit('ac:socket:analyze_response', data);
+      });
       //-----------------------------------------------------------------------------------------
-      // recibir
-      socket.on('event', function () {
-
+      socket.on('ac:socket:process', function (data) {
+        socket.emit('ac:socket:process_response', data);
       });
     });
 }

@@ -1,9 +1,8 @@
 angular.module('ac.controllers', ['ngMaterial'])
-    .controller('ContentController', ['$scope', '$rootScope', 'ACFSServices', 'ACMockResponse', '$mdDialog', '$mdMedia',
-      function($scope, $rootScope, ACFSServices, ACMockResponse, $mdDialog, $mdMedia) {
+    .controller('ContentController', ['$scope', '$rootScope', 'ACFSServices', '$mdDialog', '$mdMedia', 'ACSockets',
+      function($scope, $rootScope, ACFSServices, $mdDialog, $mdMedia, ACSockets) {
       var platform = 'Android',
-          profile = 'A',
-          items = ACMockResponse;
+          profile = 'A';
 
       $scope.methods = {
         analyze: function() {
@@ -11,7 +10,8 @@ angular.module('ac.controllers', ['ngMaterial'])
             var _item = item;
             ACFSServices.readFileContent(item.fullPath, function(content) {
               var parts = _item.name.split('.');
-              $scope.data.items.push({
+
+              ACSockets.analyze({
                 file: _item.name,
                 fullPath: _item.fullPath,
                 selected: false,
@@ -19,7 +19,7 @@ angular.module('ac.controllers', ['ngMaterial'])
                 description: 'Descripcion del problema',
                 snippet: content.substring(0, 350),
                 line: 100
-              })
+              });
             });
           });
           $scope.data.running = true;
@@ -122,6 +122,15 @@ angular.module('ac.controllers', ['ngMaterial'])
             })
             /*------------------------------------------------------------------------*/
           ];
+
+      ACSockets.addListener('ac:socket:analyze_response', function(data) {
+        // agregar a la lista de problemas encontrados
+        $scope.data.items.push(data);
+      });
+
+      ACSockets.addListener('ac:socket:process_response', function(data) {
+        // sobreescribir en el filesystem el archivo recibido
+      });
 
       $scope.$on('$destroy', function() {
         listeners.forEach(function(listener) {

@@ -256,4 +256,17 @@ angular.module('ac.services', [])
         }
 
       ]
+    })
+    .factory('ACSockets', function($socket, $q, $rootScope) {
+      return {
+        analyze: function(data) {
+          $socket.emit('ac:socket:analyze', data);
+        },
+        process: function(data) {
+          $socket.emit('ac:socket:process', data);
+        },
+        addListener: function(event, handler) {
+          $socket.on(event, handler);
+        }
+      };
     });

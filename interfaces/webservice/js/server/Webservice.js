@@ -4,14 +4,22 @@ function Webservice(_port) {
   var path = require('path');
   var app = express();
   var web_port = _port || normalizePort(process.env.PORT || '3000');
-  var socket_port = 3001;
+  var socket_port = 3010;
 
-  var helperSocketConnection = require('./SocketConnection.js');
+  var helperSocketConnection = require('./../../../../core/SocketConnection.js');
 
-  app.use(express.static(path.join(__dirname, '../assets')));
-  app.use(express.static(path.join(__dirname, '../interfaces/webservice')));
-  app.use(express.static(path.join(__dirname, '../bower_components')));
-  app.use(express.static(path.join(__dirname, '../node_modules')));
+  var path_assets = path.join(__dirname, '../../../../assets');
+  var path_client = path.join(__dirname, '../client');
+  var path_bower_components = path.join(__dirname, '../../../../bower_components');
+  var path_node_modules = path.join(__dirname, '../../../../node_modules');
+  var path_index = path.join(__dirname, '../../');
+
+
+  app.use(express.static(path_index));
+  app.use(express.static(path_assets));
+  app.use(express.static(path_client));
+  app.use(express.static(path_bower_components));
+  app.use(express.static(path_node_modules));
 
   app.use(function(req, res, next) {
     var err = new Error('Not Found');
