@@ -25,7 +25,8 @@ module.exports = {
     getUnitValueFromParameter: function (parameter) {
         if (this.getNumericValueFromParameter(parameter) != null){
             var unit = parameter.slice(parameter.length-2, parameter.length);
-            if (_.has(_.invert(XMLConstants.UNITS), unit)) {
+
+            if(_.includes(XMLConstants.UNITS, unit)){
                 return unit
             }
         }
@@ -55,12 +56,24 @@ module.exports = {
         return code.replace(parameter+applyObject.quote+applyObject.size, value);
     },
 
-    replaceNumericParameterValue: function (code, parameter, numericValue) {
-        //TODO
+    replaceNumericParameterValue: function (code, parameter, numericValue, attribute) {
+        return code.replace(
+            code.substring(
+                code.indexOf(attribute),
+                code.length
+            ).match(parameter)[0].match(/\d+/),
+            numericValue
+        );
     },
 
-    replaceUnitParameterValue: function (code, parameter, unit) {
-        //TODO
+    replaceUnitParameterValue: function (code, parameter, unit, attribute) {
+        return code.replace(
+            code.substring(
+                code.indexOf(attribute),
+                code.length
+            ).match(parameter)[0].match((/[A-z]\w+/g)),
+            unit
+        );
     },
 
     getIndexOfParameter: function (code, parameter) {

@@ -24,12 +24,12 @@ module.exports = {
         if (numericWidthValue) {
             var widthUnit = XMLHelper.getUnitValueFromParameter(width);
             if (widthUnit != recommendedUnit) {
-                code = XMLHelper.replaceUnitParameterValue(code, width, recommendedUnit);
+                code = XMLHelper.replaceUnitParameterValue(code, width, recommendedUnit, XMLConstants.PARAMETERS.LAYOUT_WIDTH);
                 result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
             }
             else {
                 if (parseInt(numericWidthValue) < minWidth) {
-                    code = XMLHelper.replaceNumericParameterValue(code, width, minWidth);
+                    code = XMLHelper.replaceNumericParameterValue(code, width, minWidth, XMLConstants.PARAMETERS.LAYOUT_WIDTH);
                     result.push(Common.resultItem(codeBlock, code, "El ancho minimo recomendado es " + minWidth));
                 }
             }
@@ -38,12 +38,12 @@ module.exports = {
         if (numericHeightValue) {
             var heightUnit = XMLHelper.getUnitValueFromParameter(height);
             if (heightUnit != recommendedUnit) {
-                code = XMLHelper.replaceUnitParameterValue(code, height, recommendedUnit);
+                code = XMLHelper.replaceUnitParameterValue(code, height, recommendedUnit, XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
                 result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
             }
             else {
                 if (parseInt(numericHeightValue) < minHeigth) {
-                    code = XMLHelper.replaceNumericParameterValue(code, height, minHeigth);
+                    code = XMLHelper.replaceNumericParameterValue(code, height, minHeigth, XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
                     result.push(Common.resultItem(codeBlock, code, "La altura minima recomendada es " + minHeigth));
                 }
             }

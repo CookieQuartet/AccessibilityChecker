@@ -23,8 +23,8 @@ BaseListener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
 BaseListener.prototype.constructor = BaseListener;
 
 BaseListener.prototype.addNodeResult = function(nodeResult) {
-  if (nodeResult) {
-    _accessibilityCheckerResult.push(nodeResult);
+  if (!_.isEmpty(nodeResult)) {
+      this._accessibilityCheckerResult.push(nodeResult);
   }
 };
 
@@ -35,7 +35,7 @@ BaseListener.prototype.getAccessibilityCheckerResult = function() {
 BaseListener.prototype.getCodeBlock = function(ctx) {
   var startIndex = ctx.start.start,
       stopIndex = ctx.stop.stop+ 1,
-      code = ctx.start.getInputStream().getText(start, stop),
+      code = ctx.start.getInputStream().getText(startIndex, stopIndex),
       startLine = ctx.start.line,
       stopLine = ctx.stop.line;
   return {
@@ -47,8 +47,8 @@ BaseListener.prototype.getCodeBlock = function(ctx) {
   }
 };
 
-BaseListener.prototype.processRule = function(code, line, rule) {
-  return rule.action(code, line);
+BaseListener.prototype.processRule = function(codeBlock, rule) {
+  return rule.options.action(codeBlock);
 };
 
 BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
