@@ -1,6 +1,13 @@
 var _ = require('lodash');
 var CodeRules = require('./CodeRules');
 
+/*
+
+Desde el fronend se va a llamar a un metodo que llama a dos metodos:
+          - Primero llama al metodo que procesa los nodos y guarda el accessibilityCheckerResultArray
+          - Por ultimo llama al getAccessibilityCheckerResult que retorna el resultado.
+ */
+
 function BaseListener(rules, mode) {
   antlr4.tree.ParseTreeListener.call(this);
   this.codeRules = new CodeRules(rules);
@@ -26,16 +33,15 @@ BaseListener.prototype.getAccessibilityCheckerResult = function() {
 };
 
 BaseListener.prototype.getCodeBlock = function(ctx) {
-  var start = ctx.start.start,
-      stop = ctx.stop.stop+ 1,
+  var startIndex = ctx.start.start,
+      stopIndex = ctx.stop.stop+ 1,
       code = ctx.start.getInputStream().getText(start, stop),
       startLine = ctx.start.line,
       stopLine = ctx.stop.line;
   return {
-    start: start,
-    stop: stop,
     code: code,
-    originalCode: code,
+    startIndex: startIndex,
+    stopIndex: stopIndex,
     startLine: startLine,
     stopLine: stopLine
   }
@@ -50,10 +56,10 @@ BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
       _result = [];
 
   _.each(rules, function(rule) {
-     var processResult = _self.processRule(codeBlock.code,  codeBlock.startLine, rule);
+     var processResult = _self.processRule(codeBlock, rule);
 
     if (processResult) {
-      _result.push(processResult.analyzeResult);
+      _result.push(processResult);
     }
   });
 
