@@ -1,18 +1,22 @@
-var XMLCodeRules = [
-  {
-    id: 1,
-    priority: 1,
-    name: 'Regla 1',
-    description: 'Regla de prueba de tag',
-    type: 'android.xml.tag',
-    match: function(code) { return true; },
-    apply: function(code, ctx) {
-      var startToken = code.indexOf('>');
-      var comment = '\n<!-- esto es un comentario de tag -->\n';
-      return code.substring(0, startToken+1) + comment + code.substring(startToken+1, code.length);
-    }
-  }
+var XMLRuleActions = require('./helper/XMLRuleActions.js');
+var XMLConstants = require('./helper/XMLConstants.js');
+var XMLHelper = require('./helper/XMLHelper.js');
 
+var XMLCodeRules = [
+    {
+        id: 1,
+        priority: 1,
+        name: 'Regla tamaño de button',
+        description: 'Prueba del tamaño del button sea superior',
+        type: 'android.xml.tag',
+        action: function(codeBlock) {
+            if (!XMLHelper.verifyFirstElement(codeBlock.code, XMLConstants.TAGS.BUTTON)) {
+                return false;
+            }
+
+            return XMLRuleActions.analyzeAndroidLayoutSize(codeBlock, 48, 48, XMLConstants.UNITS.DP);
+        }
+    }
 ];
 
 module.exports = XMLCodeRules;

@@ -24,6 +24,7 @@
   "homepage": "https://github.com/CookieQuartet/AccessibilityChecker",
   "dependencies": {
     "antlr4": "^4.5.2",
+    "debug": "^2.2.0",
     "lodash": "^3.9.3",
     "glob": "^5.0.14"
   }

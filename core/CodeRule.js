@@ -19,8 +19,8 @@ CodeRule.prototype.match = function(code) {
   return this.options.match(code);
 };
 
-CodeRule.prototype.apply = function(code) {
-  return this.options.apply(code);
+CodeRule.prototype.apply = function(code, applyArray) {
+  return this.options.apply(code, applyArray);
 };
 
 module.exports = CodeRule;
