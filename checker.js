@@ -64,8 +64,9 @@ if(argIndex.servicePort > 0) {
             glob(pattern, opts, function (er, files) {
               var output;
               _.each(files, function (filename) {
+                var file = fs.readFileSync(opts.cwd + '/' + filename, "utf8");
                 try {
-                  output = srcProc(opts.cwd + '/' + filename, cfg);
+                  output = srcProc(file, cfg);
                   console.log(output);
                 } catch (e) {
                   console.log(filename);
