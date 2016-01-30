@@ -259,6 +259,9 @@ angular.module('ac.services', [])
     })
     .factory('ACSockets', function($socket, $q, $rootScope) {
       return {
+        getProfiles: function() {
+          $socket.emit('ac:socket:get_profiles');
+        },
         analyze: function(data) {
           $socket.emit('ac:socket:analyze', data);
         },

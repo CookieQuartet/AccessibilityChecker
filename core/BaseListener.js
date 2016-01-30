@@ -24,7 +24,8 @@ BaseListener.prototype.constructor = BaseListener;
 
 BaseListener.prototype.addNodeResult = function(nodeResult) {
   if (!_.isEmpty(nodeResult)) {
-      this._accessibilityCheckerResult.push(nodeResult);
+      //this._accessibilityCheckerResult.push(nodeResult);
+    this._accessibilityCheckerResult = _.union(this._accessibilityCheckerResult, nodeResult);
   }
 };
 
@@ -44,6 +45,7 @@ BaseListener.prototype.getCodeBlock = function(ctx) {
     stopIndex: stopIndex,
     startLine: startLine,
     stopLine: stopLine
+
   }
 };
 
@@ -56,10 +58,10 @@ BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
       _result = [];
 
   _.each(rules, function(rule) {
-     var processResult = _self.processRule(codeBlock, rule);
+    var processResult = _self.processRule(codeBlock, rule);
 
     if (processResult) {
-      _result.push(processResult);
+      _result = _.union(_result, processResult);
     }
   });
 

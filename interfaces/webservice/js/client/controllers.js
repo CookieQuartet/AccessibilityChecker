@@ -1,8 +1,6 @@
 angular.module('ac.controllers', ['ngMaterial'])
     .controller('ContentController', ['$scope', '$rootScope', 'ACFSServices', '$mdDialog', '$mdMedia', 'ACSockets',
       function($scope, $rootScope, ACFSServices, $mdDialog, $mdMedia, ACSockets) {
-      var platform = 'Android',
-          profile = 'A';
 
       $scope.methods = {
         analyze: function() {
@@ -12,13 +10,12 @@ angular.module('ac.controllers', ['ngMaterial'])
               var parts = _item.name.split('.');
 
               ACSockets.analyze({
-                file: _item.name,
+                file: content,
+                name: _item.name,
                 fullPath: _item.fullPath,
-                selected: false,
                 extension: parts[parts.length-1],
-                description: 'Descripcion del problema',
-                snippet: content.substring(0, 350),
-                line: 100
+                platform: $scope.data.platform.platform,
+                profile: $scope.data.profile
               });
             });
           });
@@ -81,19 +78,15 @@ angular.module('ac.controllers', ['ngMaterial'])
           files: [],
           //items: items,
           items: [],
-          platform: platform,
-          profile: profile,
+          platform: null,
+          profile: null,
           running: false,
           platforms: [
-            {category: 'platform', name: 'Android'},
-            {category: 'platform', name: 'iOS'},
-            {category: 'platform', name: 'Windows'}
+            {platform: 'android', name: 'Android'},
+            {platform: 'ios', name: 'iOS'},
+            {platform: 'windows', name: 'Windows'}
           ],
-          profiles: [
-            {category: 'profile', name: 'A'},
-            {category: 'profile', name: 'B'},
-            {category: 'profile', name: 'C'}
-          ]
+          profiles: []
       };
 
       var listeners = [
@@ -115,26 +108,34 @@ angular.module('ac.controllers', ['ngMaterial'])
               $scope.data.running = false;
             }),
             $scope.$watch('data.platform', function(newValue, oldValue) {
-              if(newValue !== 'Android') {
+              if(newValue && newValue.name !== 'Android') {
                 alert('Por el momento solamente funciona con plataforma Android');
                 $scope.data.platform = oldValue;
               }
-            })
+            }, true)
             /*------------------------------------------------------------------------*/
           ];
 
       ACSockets.addListener('ac:socket:analyze_response', function(data) {
         // agregar a la lista de problemas encontrados
-        $scope.data.items.push(data);
+        $scope.data.items = _.union($scope.data.items, data);
       });
 
       ACSockets.addListener('ac:socket:process_response', function(data) {
         // sobreescribir en el filesystem el archivo recibido
       });
 
+      ACSockets.addListener('ac:socket:profiles', function(data) {
+        $scope.data.profiles = _.clone(data);
+        $scope.data.profile = $scope.data.profiles[0];
+        $scope.data.platform = $scope.data.platforms[0];
+      });
+
       $scope.$on('$destroy', function() {
         listeners.forEach(function(listener) {
           listener.call();
         });
-      })
+      });
+
+      ACSockets.getProfiles();
     }]);

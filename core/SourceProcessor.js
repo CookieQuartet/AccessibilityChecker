@@ -1,4 +1,4 @@
-function SourceProcessor(file, options, rules, analyze) {
+function SourceProcessor(file, options, rules) {
   // antlr4 es la librería que nos permite recorrer el código
   var antlr4 = require('antlr4/index');
   // SourceMaker toma un conjunto de modificaciones y las aplica al código original
@@ -35,7 +35,10 @@ function SourceProcessor(file, options, rules, analyze) {
   antlr4.tree.ParseTreeWalker.DEFAULT.walk(listener, tree);
 
   // SourceMaker(...) aplica las modificaciones al código original
-  return SourceMaker(file, listener.getBlocks());
+  //return SourceMaker(file, listener.getBlocks());
+
+  return listener.getAccessibilityCheckerResult();
+
 }
 
 module.exports = SourceProcessor;

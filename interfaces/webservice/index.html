@@ -41,8 +41,8 @@
                         <md-select ng-model="data.platform">
                             <md-optgroup label="Plataformas">
                                 <md-option
-                                    ng-value="platform.name"
-                                    ng-repeat="platform in data.platforms | filter: { category: 'platform' }">{{ platform.name }}</md-option>
+                                    ng-value="platform"
+                                    ng-repeat="platform in data.platforms">{{ platform.name }}</md-option>
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
@@ -52,8 +52,8 @@
                         <md-select ng-model="data.profile">
                             <md-optgroup label="Perfiles">
                                 <md-option
-                                    ng-value="profile.name"
-                                    ng-repeat="profile in data.profiles | filter: { category: 'profile' }">{{ profile.name }}</md-option>
+                                    ng-value="profile"
+                                    ng-repeat="profile in data.profiles">{{ profile.name }}</md-option>
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
@@ -85,10 +85,10 @@
                                     </div>
                                 </div>
                                 <div flex="95" layout="column">
-                                    <h3 flex class="ac-bold">{{ item.file }}</h3>
-                                    <p flex>{{ "Línea: "+ item.line }}</p>
-                                    <p flex>{{ item.description }}</p>
-                                    <div hljs source="item.snippet" language="{{ item.extension }}"></div>
+                                    <h3 flex class="ac-bold">{{ item.name }}</h3>
+                                    <p flex>{{ "Línea: "+ item.startLine }}</p>
+                                    <p flex>{{ item.error }}</p>
+                                    <div hljs source="item.code" language="{{ item.extension }}"></div>
                                 </div>
                                 <md-checkbox class="md-secondary" ng-model="item.selected"></md-checkbox>
                             </div>
@@ -111,7 +111,8 @@
 
 <script src="highlight.js/lib/highlight.min.js"></script>
 <script src="highlightjs-line-numbers.js/src/highlightjs-line-numbers.js"></script>
-<script src="angular-highlightjs/angular-highlightjs.js"></script>
+<!--<script src="angular-highlightjs/angular-highlightjs.js"></script>-->
+<script src="js/client/angular-highlightjs.js"></script>
 
 <script src="angular-animate/angular-animate.js"></script>
 <script src="angular-aria/angular-aria.js"></script>
