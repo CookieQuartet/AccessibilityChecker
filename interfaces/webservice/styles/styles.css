@@ -55,7 +55,7 @@ md-whiteframe.ac-dragdrop  {
 }
 
 .ac-results-list-container {
-    height: 400px;
+    height: 370px;
 }
 
 .ac-results-list .md-list-item-text {
@@ -113,4 +113,31 @@ md-whiteframe.ac-dragdrop  {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+div[hljs] {
+    line-height: initial;
+}
+
+.ac-warn {
+    text-align: center;
+    border: 1px solid orange;
+    background: lightyellow;
+}
+
+.ac-error {
+    border: 1px solid red;
+    background: lightpink;
+}
+
+.ac-error,
+.ac-warn {
+    color: black !important;
+    padding: 8px !important;
+    margin-top: 16px !important;
+}
+
+.ac-highlight-line {
+    font-weight: bold;
+    background: lightpink;
 }

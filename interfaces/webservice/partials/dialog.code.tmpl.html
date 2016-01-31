@@ -11,9 +11,7 @@
         </md-toolbar>
         <md-dialog-content>
             <div class="md-dialog-content">
-                <!--<textarea name="" id="ac-file-content">{{ data.content }}</textarea>-->
-                <!--<pre id="ac-file-content" flex><code hjls>{{ data.content }}</code></pre>-->
-                <div id="ac-file-content" flex hljs source="data.content" line-numbers="true" language="{{ data.extension }}"></div>
+                <div id="ac-file-content" flex hljs source="data.content" line-numbers="true" start="{{ data.start }}" stop="{{ data.stop }}" language="{{ data.extension }}"></div>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">

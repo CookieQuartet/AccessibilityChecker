@@ -14,8 +14,8 @@ angular.module('ac.controllers', ['ngMaterial'])
                 name: _item.name,
                 fullPath: _item.fullPath,
                 extension: parts[parts.length-1],
-                platform: $scope.data.platform.platform,
-                profile: $scope.data.profile
+                platform: $scope.data.platform.type,
+                profile: $scope.data.profile.id
               });
             });
           });
@@ -47,9 +47,11 @@ angular.module('ac.controllers', ['ngMaterial'])
               controller: function DialogController($scope, $mdDialog) {
 
                 $scope.data = {
-                  name: _item.file,
+                  name: _item.name,
                   content: content,
-                  extension: _item.extension
+                  extension: _item.extension,
+                  start: _item.startLine,
+                  stop: _item.stopLine
                 };
 
                 $scope.close = function() {
@@ -69,6 +71,11 @@ angular.module('ac.controllers', ['ngMaterial'])
               $scope.customFullscreen = (wantsFullScreen === true);
             });
           });
+        },
+        onTabSelected: function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+          $event.stopImmediatePropagation();
         }
       };
 
@@ -76,15 +83,14 @@ angular.module('ac.controllers', ['ngMaterial'])
           project: '',
           analyzable: false,
           files: [],
-          //items: items,
           items: [],
           platform: null,
           profile: null,
           running: false,
           platforms: [
-            {platform: 'android', name: 'Android'},
-            {platform: 'ios', name: 'iOS'},
-            {platform: 'windows', name: 'Windows'}
+            {type: 'android', name: 'Android'},
+            {type: 'ios', name: 'iOS'},
+            {type: 'windows', name: 'Windows'}
           ],
           profiles: []
       };

@@ -13,20 +13,11 @@ function SocketConnection(io) {
       });
 
       socket.on('ac:socket:analyze', function (data) {
-        // analizar el código
-        /*
-        var _data = {
-          file: _item.name,
-          fullPath: _item.fullPath,
-          selected: false,
-          extension: parts[parts.length-1],
-          description: 'Descripcion del problema',
-          snippet: content.substring(0, 350),
-          line: 100
-        };
-        */
+        // obtener las opciones para el tipo de archivo
         var options = require('../platform/' + data.platform + '/' + data.extension + '/options.js');
-        var rules = profileManager.getRules(data.profile.id, data.extension);
+        // obtener las reglas que aplican al archivo según plataforma, tipo y perfil
+        var rules = profileManager.getRules(data.profile, data.extension);
+        // analizar el código
         var result = SourceProcessor(data.file, options, rules);
 
         if(result.length > 0) {
@@ -34,8 +25,6 @@ function SocketConnection(io) {
             item.name = data.name;
             item.fullPath = data.fullPath;
             item.extension = data.extension;
-            item.platform = data.platform;
-            item.profile = data.profile;
             item.selected = false;
           });
           socket.emit('ac:socket:analyze_response', _data);

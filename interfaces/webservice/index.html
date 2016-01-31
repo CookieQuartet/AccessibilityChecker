@@ -53,7 +53,7 @@
                             <md-optgroup label="Perfiles">
                                 <md-option
                                     ng-value="profile"
-                                    ng-repeat="profile in data.profiles">{{ profile.name }}</md-option>
+                                    ng-repeat="profile in data.profiles">{{ profile.description }}</md-option>
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
@@ -64,15 +64,15 @@
                 </md-button>
             </md-whiteframe>
             <md-whiteframe class="ac-results-list-container md-whiteframe-2dp ac-results-list" flex-sm="80" flex-gt-sm="80" flex-gt-md="80" layout="column">
-                <md-subheader class="md-no-sticky">Problemas encontrados</md-subheader>
+                <md-subheader class="md-no-sticky">Problemas encontrados<span class="ac-bold" ng-if="data.items.length > 0">{{ ' : ' + data.items.length }}</span></md-subheader>
                 <md-divider></md-divider>
                 <md-progress-linear md-mode="indeterminate" ng-show="data.running"></md-progress-linear>
                 <md-content class="ac-empty-message" layout="row" layout-align="center center" ng-if="data.items.length < 1 && !data.running">
-                    <span flex="50" style="text-align: center;">La lista de archivos aparece aquí</span>
+                    <span flex="50" class="ac-warn">La lista de problemas aparece aquí</span>
                 </md-content>
                 <md-content layout-padding flex ng-if="data.items.length > 0">
                     <md-list class="ac-results-list" flex>
-                        <md-list-item class="md-3-line" ng-repeat="item in data.items">
+                        <md-list-item class="md-3-line" ng-click="methods.onTabSelected($event)" ng-repeat="item in data.items">
                             <div class="md-list-item-text" layout="row">
                                 <div flex="5" style="min-width: 60px;">
                                     <div>
@@ -84,13 +84,24 @@
                                         <md-tooltip md-direction="right">{{ item.fullPath }}</md-tooltip>
                                     </div>
                                 </div>
-                                <div flex="95" layout="column">
-                                    <h3 flex class="ac-bold">{{ item.name }}</h3>
-                                    <p flex>{{ "Línea: "+ item.startLine }}</p>
-                                    <p flex>{{ item.error }}</p>
-                                    <div hljs source="item.code" language="{{ item.extension }}"></div>
+                                <div flex="90" layout="column" class="md-exclude">
+                                    <h3 flex class="ac-bold">{{ item.name + ':' + item.startLine }}</h3>
+                                    <p flex class="ac-error">{{ item.error }}</p>
+                                    <md-tabs md-dynamic-height md-border-bottom>
+                                        <md-tab label="Original">
+                                            <md-content class="md-padding">
+                                                <div hljs source="item.originalCode" language="{{ item.extension }}"></div>                                            </md-content>
+                                        </md-tab>
+                                        <md-tab label="Modificado">
+                                            <md-content class="md-padding">
+                                                <div hljs source="item.code" language="{{ item.extension }}"></div>                                            </md-content>
+                                        </md-tab>
+                                    </md-tabs>
                                 </div>
-                                <md-checkbox class="md-secondary" ng-model="item.selected"></md-checkbox>
+                                <div flex layout-align="start start">
+                                    <md-checkbox flex="5" class="md-secondary" ng-model="item.selected"></md-checkbox>
+                                </div>
+
                             </div>
                             <md-divider></md-divider>
                         </md-list-item>
@@ -110,7 +121,7 @@
 <script src="socket.io/node_modules/socket.io-client/socket.io.js"></script>
 
 <script src="highlight.js/lib/highlight.min.js"></script>
-<script src="highlightjs-line-numbers.js/src/highlightjs-line-numbers.js"></script>
+<script src="js/client/highlightjs-line-numbers.js"></script>
 <!--<script src="angular-highlightjs/angular-highlightjs.js"></script>-->
 <script src="js/client/angular-highlightjs.js"></script>
 

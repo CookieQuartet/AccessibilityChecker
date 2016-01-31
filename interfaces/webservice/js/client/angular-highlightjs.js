@@ -100,7 +100,7 @@
           _hlCb = cb;
         };
 
-        ctrl._highlight = function (code, lines) {
+        ctrl._highlight = function (code, lines, start, stop) {
           if (!_elm) {
             return;
           }
@@ -164,7 +164,7 @@
           }
 
           if(lines) {
-            hljsService.lineNumbersBlock(_elm[0]);
+            hljsService.lineNumbersBlock(_elm[0], start, stop);
           }
         };
         ctrl.highlight = debounce(ctrl._highlight, 17);
@@ -379,9 +379,11 @@
             return;
           }
           var withLines = iAttrs.lineNumbers == 'true';
+          var start = parseInt(iAttrs.start);
+          var stop = parseInt(iAttrs.stop);
           scope.$watch(iAttrs[dirName], function (newCode, oldCode) {
             if (newCode) {
-              ctrl.highlight(newCode, withLines);
+              ctrl.highlight(newCode, withLines, start, stop);
             }
             else {
               ctrl.clear();
