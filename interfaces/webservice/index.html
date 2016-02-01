@@ -111,16 +111,18 @@
             <md-whiteframe ng-show="data.items.length > 0" class="ac-buttonpad" flex-sm="80" flex-gt-sm="80" flex-gt-md="80" layout="row" layout-align="end center" layout-wrap>
                 <md-button class="md-raised ac-select-none-button" ng-click="methods.selectNone()">Ninguno</md-button>
                 <md-button class="md-raised ac-select-all-button" ng-click="methods.selectAll()">Todos</md-button>
-                <md-button class="md-raised md-primary ac-apply-button">Aplicar los cambios</md-button>
+                <md-button class="md-raised md-primary ac-apply-button" ng-click="methods.process()">Aplicar los cambios</md-button>
             </md-whiteframe>
         </div>
     </div>
 </body>
 </html>
 <script src="lodash/lodash.js"></script>
+<script src="jszip/dist/jszip.js"></script>
+<script src="js/client/FileSaver.js"></script>
 <script src="socket.io/node_modules/socket.io-client/socket.io.js"></script>
 
-<script src="highlight.js/lib/highlight.min.js"></script>
+<script src="js/client/highlight.min.js"></script>
 <script src="js/client/highlightjs-line-numbers.js"></script>
 <!--<script src="angular-highlightjs/angular-highlightjs.js"></script>-->
 <script src="js/client/angular-highlightjs.js"></script>

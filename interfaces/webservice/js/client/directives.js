@@ -33,7 +33,7 @@ angular.module('ac.directives', [])
 
           var listeners = [
                 scope.$on('ac:read-file', function() {
-                  ACFSServices.readFileContent('/Test/.gradle/1.6/taskArtifacts/cache.properties', function(content) {
+                  ACFSServices.readFileContent('/Test/.gradle/1.6/taskArtifacts/cache.properties', 'text', function(content) {
                     console.log(content);
                   })
                 }),
@@ -43,7 +43,6 @@ angular.module('ac.directives', [])
                 scope.$on('ac:pick-project', function() {
                   fileSelect[0].click();
                 })
-
               ];
 
           scope.$on('$destroy', function() {

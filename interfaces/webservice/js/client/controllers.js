@@ -1,14 +1,18 @@
 angular.module('ac.controllers', ['ngMaterial'])
-    .controller('ContentController', ['$scope', '$rootScope', 'ACFSServices', '$mdDialog', '$mdMedia', 'ACSockets',
-      function($scope, $rootScope, ACFSServices, $mdDialog, $mdMedia, ACSockets) {
+    .controller('ContentController', ['$scope', '$rootScope', '$q', 'ACFSServices', '$mdDialog', '$mdMedia', 'ACSockets', 'ACZip',
+      function($scope, $rootScope, $q, ACFSServices, $mdDialog, $mdMedia, ACSockets, ACZip) {
 
       $scope.methods = {
         analyze: function() {
+          // reseteo la lista de archivos
+          $scope.data.files = [];
+          // Genero un listado de TODOS los archivos del proyecto
+          ACFSServices.listFiles(ACFSServices.root());
+          // proceso SOLO los archivos necesarios
           ACFSServices.processFiles(ACFSServices.root(), (/\.(xml|java)$/i), function(item) {
             var _item = item;
-            ACFSServices.readFileContent(item.fullPath, function(content) {
+            ACFSServices.readFileContent(item.fullPath, 'text', function(content) {
               var parts = _item.name.split('.');
-
               ACSockets.analyze({
                 file: content,
                 name: _item.name,
@@ -20,6 +24,35 @@ angular.module('ac.controllers', ['ngMaterial'])
             });
           });
           $scope.data.running = true;
+        },
+        generateZip: function() {
+          var promises = [];
+          var totalDefer = $q.defer();
+          var count = 0;
+          ACFSServices.processFiles(ACFSServices.root(), (/(.+)/i), function(item) {
+            var _item = item;
+            var defer = $q.defer();
+            promises.push(defer.promise);
+            ACFSServices.readFileContent(item.fullPath, 'binary', function(content) {
+              ACZip.addFile(_item.fullPath, content);
+              defer.resolve();
+              count = count + 1;
+              if(count == $scope.data.files.length) {
+                totalDefer.resolve(promises);
+              }
+            });
+          });
+          return totalDefer.promise;
+        },
+        process: function() {
+          // aplicar los cambios seleccionados
+          // ...
+          // generar el zip para descarga
+          $scope.methods.generateZip().then(function(promises) {
+            $q.when.apply(null, promises).then(function() {
+              ACZip.getZip();
+            });
+          });
         },
         pickProject: function() {
           $rootScope.$broadcast('ac:pick-project');
@@ -40,7 +73,7 @@ angular.module('ac.controllers', ['ngMaterial'])
 
           var _item = item;
 
-          ACFSServices.readFileContent(item.fullPath, function(content) {
+          ACFSServices.readFileContent(item.fullPath, 'text', function(content) {
 
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
             $mdDialog.show({
@@ -98,21 +131,21 @@ angular.module('ac.controllers', ['ngMaterial'])
       var listeners = [
             $scope.$on('ac:select-project', function(event, data) {
               $scope.data.project = data.name;
+              $scope.data.files = [];
               $scope.data.analyzable = true;
             }),
-            $scope.$on('ac:file-list', function(event, data) {
-              $scope.data.files = data;
-            }),
+            $scope.$on('ac:file-item', function(event, data) {
+              $scope.data.files.push(data);
+             }),
             $scope.$on('ac:reset-list', function(event, data) {
               $scope.data.items = [];
+            }),
+            $scope.$watch('data.items.length', function(newValue, oldValue) {
+              $scope.data.running = false;
             }),
             /*------------------------------------------------------------------------*/
             /* Eliminar cuando se implemente otra plataforma                          */
             /*------------------------------------------------------------------------*/
-            $scope.$watch('data.items.length', function(newValue, oldValue) {
-
-              $scope.data.running = false;
-            }),
             $scope.$watch('data.platform', function(newValue, oldValue) {
               if(newValue && newValue.name !== 'Android') {
                 alert('Por el momento solamente funciona con plataforma Android');
