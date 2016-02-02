@@ -80,7 +80,7 @@ module.exports = {
             children: []
         }
     },
-    run: function(ACArray) {
+    generateBlocks: function(ACArray) {
         var that = this;
         var blockArray = [];
         var blockObj = {};

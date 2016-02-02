@@ -23,15 +23,16 @@
   },
   "homepage": "https://github.com/CookieQuartet/AccessibilityChecker",
   "dependencies": {
+    "angular-highlightjs": "^0.5.1",
     "antlr4": "^4.5.2",
     "debug": "^2.2.0",
-    "lodash": "^3.9.3",
-    "glob": "^5.0.14",
+    "diff": "^2.2.1",
     "express": "^4.13.3",
-    "socket.io": "^1.4.4",
-    "q": "^1.4.1",
+    "glob": "^5.0.14",
     "highlight.js": "^9.1.0",
-    "angular-highlightjs": "^0.5.1",
-    "highlightjs-line-numbers.js": "^1.0.2"
+    "highlightjs-line-numbers.js": "^1.0.2",
+    "lodash": "^3.9.3",
+    "q": "^1.4.1",
+    "socket.io": "^1.4.4"
   }
 }

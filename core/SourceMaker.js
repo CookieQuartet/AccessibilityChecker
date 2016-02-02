@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var GenerateBlocks = require('./GenerateBlocks');
+var Blocks = require('./GenerateBlocks');
 
 
 
@@ -12,7 +12,7 @@ var GenerateBlocks = require('./GenerateBlocks');
  */
 function SourceMaker(file, ACArray) {
   var originalFile = String(file),
-      blocks = GenerateBlocks.run(ACArray),
+      blocks = Blocks.generateBlocks(ACArray),
       root = {
         code: file,
         start: 0,
