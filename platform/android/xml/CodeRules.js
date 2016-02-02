@@ -10,7 +10,7 @@ var XMLCodeRules = [
         description: 'Prueba del tamaño del button sea superior',
         type: 'android.xml.tag',
         action: function(codeBlock) {
-            if (!XMLHelper.verifyFirstElement(codeBlock.code, XMLConstants.TAGS.BUTTON)) {
+            if (!XMLHelper.verifyFirstElement(codeBlock.code, XMLConstants.TAGS.BUTTON) && !XMLHelper.verifyFirstElement(codeBlock.code, XMLConstants.TAGS.IMAGE_BUTTON)) {
                 return false;
             }
 

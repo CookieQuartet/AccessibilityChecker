@@ -3,6 +3,7 @@ module.exports = {
     TAGS : {
         VIEW : '<View',
         BUTTON : '<Button',
+        IMAGE_BUTTON: '<ImageButton',
         TEXT_VIEW : '<TextView'
     },
 

@@ -1,6 +1,7 @@
 function SourceProcessor(file, options, rules) {
   // antlr4 es la librería que nos permite recorrer el código
   var antlr4 = require('antlr4/index');
+  var _ = require('lodash');
   // SourceMaker toma un conjunto de modificaciones y las aplica al código original
   var SourceMaker = require('./SourceMaker');
   var platform = '../platform/';
@@ -35,7 +36,7 @@ function SourceProcessor(file, options, rules) {
   antlr4.tree.ParseTreeWalker.DEFAULT.walk(listener, tree);
 
   // SourceMaker(...) aplica las modificaciones al código original
-  //return SourceMaker(file, listener.getBlocks());
+  SourceMaker(file, _.clone(listener.getAccessibilityCheckerResult()));
 
   return listener.getAccessibilityCheckerResult();
 
