@@ -2,6 +2,10 @@ angular.module('ac.controllers', ['ngMaterial'])
     .controller('ContentController', ['$scope', '$rootScope', '$q', 'ACFSServices', '$mdDialog', '$mdMedia', 'ACSockets', 'ACZip',
       function($scope, $rootScope, $q, ACFSServices, $mdDialog, $mdMedia, ACSockets, ACZip) {
 
+      var totalDefer,
+          deferreds = {},
+          promises = [];
+
       $scope.methods = {
         analyze: function() {
           // reseteo la lista de archivos
@@ -45,12 +49,41 @@ angular.module('ac.controllers', ['ngMaterial'])
           return totalDefer.promise;
         },
         process: function() {
+          totalDefer = $q.defer();
+          deferreds = {};
+          promises = [];
+          // solo me quedo con los errores que modifican el código
+          var blockGroups = _.chain($scope.data.items).filter(function(item) { return !item.onlyHint; }).groupBy('fullPath').value();
           // aplicar los cambios seleccionados
-          // ...
-          // generar el zip para descarga
-          $scope.methods.generateZip().then(function(promises) {
+          var index = 0,
+              length = Object.keys(blockGroups).length;
+          _.each(blockGroups, function(blocks) {
+            var _blocks = blocks;
+            ACFSServices.readFileContent(_blocks[0].fullPath, 'text', function(content) {
+              var response = ACSockets.process({
+                blocks: _blocks,
+                code: content
+              });
+              // guardo los deferreds para resolver más adelante cuando se procese el archivo
+              deferreds[response.id] = response.defer;
+              // guardo las promesas para descargar el zip cuando se resuelvan todas
+              promises.push(response.promise);
+              // si ya se procesaron todos los archivos, resolver la promesa
+              if(index == length - 1) {
+                totalDefer.resolve(promises);
+              }
+              index = index + 1;
+            });
+          });
+          // cuando todos los archivos fueron procesados, genero el zip
+          totalDefer.promise.then(function(promises) {
             $q.when.apply(null, promises).then(function() {
-              ACZip.getZip();
+              $scope.methods.generateZip().then(function(promises) {
+                $q.when.apply(null, promises).then(function() {
+                  ACZip.getZip();
+                  $scope.data.items = [];
+                });
+              });
             });
           });
         },
@@ -159,11 +192,14 @@ angular.module('ac.controllers', ['ngMaterial'])
         // agregar a la lista de problemas encontrados
         $scope.data.items = _.union($scope.data.items, data);
       });
-
       ACSockets.addListener('ac:socket:process_response', function(data) {
         // sobreescribir en el filesystem el archivo recibido
+        var _data = data;
+        ACFSServices.writeFileContent(data.blocks[0].fullPath, data.code, function(e) {
+          //console.log(e);
+          deferreds[_data.blocks[0].fullPath].resolve();
+        });
       });
-
       ACSockets.addListener('ac:socket:profiles', function(data) {
         $scope.data.profiles = _.clone(data);
         $scope.data.profile = $scope.data.profiles[0];

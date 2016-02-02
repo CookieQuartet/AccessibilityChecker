@@ -130,6 +130,7 @@ div[hljs] {
     background: lightpink;
 }
 
+.ac-hint,
 .ac-error,
 .ac-warn {
     color: black !important;
@@ -140,4 +141,9 @@ div[hljs] {
 .ac-highlight-line {
     font-weight: bold;
     background: lightpink;
+}
+
+.ac-hint {
+    border: 1px solid orange;
+    background: lightyellow;
 }
