@@ -11,14 +11,14 @@ module.exports = {
     },
 
     PARAMETERS : {
-        LAYOUT_WIDTH : 'android:layout_width',
-        LAYOUT_HEIGHT : 'android:layout_height',
-        TEXT_SIZE : 'android:textSize',
-        HINT : 'android:hint',
-        TEXT : 'android:text',
-        TEXT_COLOR : 'android:textColor',
-        HINT_COLOR : 'android:textColorHint',
-        BACKGROUND : 'android:background'
+        LAYOUT_WIDTH : 'android:layout_width=',
+        LAYOUT_HEIGHT : 'android:layout_height=',
+        TEXT_SIZE : 'android:textSize=',
+        HINT : 'android:hint=',
+        TEXT : 'android:text=',
+        TEXT_COLOR : 'android:textColor=',
+        HINT_COLOR : 'android:textColorHint=',
+        BACKGROUND : 'android:background='
     },
 
     UNITS : {

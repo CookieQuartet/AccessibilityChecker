@@ -13,7 +13,7 @@ module.exports = {
 
 
         if(!width || !height){
-            return {err: "Sintax error"}; //No tiene width ni heigth
+            return false;//{err: "Sintax error"}; //No tiene width ni heigth
         }
 
         var numericWidthValue = XMLHelper.getNumericValueFromParameter(width);
@@ -59,7 +59,7 @@ module.exports = {
         var textSize = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_SIZE);
 
         if(!textSize){
-            return {err: "Sintax error"}; //No tiene text size
+            return false; //No tiene text size
         }
 
         var result = [];

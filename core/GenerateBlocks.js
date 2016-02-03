@@ -91,10 +91,10 @@ module.exports = {
     generateBlocks: function(ACArray) {
         var that = this;
         var blockArray = [];
-        var blockObj = {};
+        var blockObj = {}; //TODO Trabajar con shift
         ACArray.forEach(function (ACObj) {
             var lastBlock = blockArray[blockArray.length - 1];
-            if (lastBlock && that.sameBlock(lastBlock, ACObj)) {
+            if (lastBlock && that.sameBlock(lastBlock, ACObj)) { //TODO Hacer un metodo find por si la persona no envia el array ordenado como lo envia AC
                 blockArray[blockArray.length - 1] = that.mergeBlock(lastBlock, ACObj);
             }
             else {
@@ -102,12 +102,9 @@ module.exports = {
 
             }
         });
-        console.log(blockArray[0].code);
         return blockArray
     }
 };
-
-
 
 //var prueba = [
 //    {

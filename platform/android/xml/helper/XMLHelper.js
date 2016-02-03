@@ -7,14 +7,14 @@ module.exports = {
 
     //Retorna el valor del primer parametro encontrado
     getParameter: function (code, parameter) {
-
-        var parameterIndexOf = code.indexOf(parameter);
+        var _code = this.removeSpaces(code);
+        var parameterIndexOf = _code.indexOf(parameter);
 
         if(parameterIndexOf  == -1 ) {
             return false; //Parametro no encontrado
         }
 
-        var value = code.slice(parameterIndexOf, code.length).match(new RegExp("\"[^\"]+\"|\'[^\']+\'"))[0];
+        var value = _code.slice(parameterIndexOf, _code.length).match(new RegExp("\"[^\"]+\"|\'[^\']+\'"))[0];
 
         return value.slice(1, value.length - 1);
     },
@@ -89,8 +89,8 @@ module.exports = {
     },
 
     addParameter: function (code, parameter) {
-        var i = code.indexOf(" "); //TODO: ES VALIDO ESTO ?
-        return code.slice(0, i) + parameter + code.slice(i)
+        var i = code.indexOf(" ");
+        return code.slice(0, i) + parameter + "\r\n" + code.slice(i)
     },
 
     makeParameter: function (parameterKey, parameterValue) {

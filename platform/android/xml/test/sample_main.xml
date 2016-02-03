@@ -149,6 +149,27 @@ limitations under the License.
                     android:nextFocusDown="@+id/partlyCloudImage"
                     />
 
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:hint="HARRINGUI"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+            />
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+            />
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:hint="@string/P1nCh4"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+            />
+
+
             <!-- Images should have a contentDescription if they convey any meaningful
                  information. Images that are purely decorative may not need a contentDescription,
                  however. -->
@@ -171,7 +192,7 @@ limitations under the License.
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/temperature"
-                    android:textSize="60sp"
+                    android:textSize="60px"
                     android:id="@+id/temperatureText"
                     android:layout_alignTop="@+id/partlyCloudyImage"
                     android:layout_toRightOf="@+id/partlyCloudyImage"
