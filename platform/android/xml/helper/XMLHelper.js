@@ -35,14 +35,6 @@ module.exports = {
         return null;
     },
 
-    getValueFromParameter: function (parameter) {
-        parameter = this.removeSpaces(parameter);
-
-        var i = code.indexOf("=");
-
-        return parameter.substr(i + 1, parameter.length - 2);
-    },
-
     removeSpaces: function (str) {
         return str.replace(/\s+/g, '');
     },
