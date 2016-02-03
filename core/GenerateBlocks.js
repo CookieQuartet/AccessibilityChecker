@@ -8,7 +8,7 @@ module.exports = {
             newCode = this.mergeItems(LBDifference, ACDifference, 0, 0, ""),
             originalCode = lastBlock.originalCode;
         lastBlock.code = newCode;
-
+        console.log(newCode);
         return lastBlock;
     },
     mergeItems: function(LBDifference, ACDifference, indexLB, indexAC, codeResult){
@@ -34,15 +34,17 @@ module.exports = {
         var ACText = ACDifference[0].value.substring(indexLB, ACDifference[0].value.length);
 
         var aux = {};
-        if(indexLB + ACText.length > indexAC + LBText.length){
+        if(ACText.length > LBText.length){
             aux = this.processDiff(LBDifference, LBText, codeResult, indexLB);
             LBDifference = aux.arrayDiff;
             indexLB = aux.index;
+            indexAC = 0;
         }
         else{
             aux = this.processDiff(ACDifference, ACText, codeResult, indexAC);
             ACDifference = aux.arrayDiff;
             indexAC = aux.index;
+            indexLB = 0;
         }
         return this.mergeItems(LBDifference, ACDifference, indexLB, indexAC, aux.codeResult);
     },
@@ -57,10 +59,16 @@ module.exports = {
             return {arrayDiff: arrayDiff, index:index, codeResult:codeResult};
         }
 
-        index+= arrayDiff[0].value.length; //Suma al indice lo que habia en el original
-        codeResult+= arrayDiff[1].value; //Agrega el nuevo texto
-        arrayDiff.shift();
-        arrayDiff.shift();
+        if(arrayDiff[0].removed){ //Caso de que elimino algo y agrego algo nuevo
+            index+= arrayDiff[0].value.length; //Suma al indice lo que habia en el original
+            codeResult+= arrayDiff[1].value; //Agrega el nuevo texto
+            arrayDiff.shift();
+            arrayDiff.shift();
+        }
+        else { //Caso de que agrego un texto
+            codeResult+= arrayDiff[0].value; //Agrega el nuevo texto
+            arrayDiff.shift();
+        }
 
         return {arrayDiff: arrayDiff, index:index, codeResult:codeResult};
     },
@@ -97,7 +105,7 @@ module.exports = {
         console.log(blockArray[0].code);
         return blockArray
     }
-}
+};
 
 
 
@@ -125,17 +133,17 @@ module.exports = {
 //        "startLine": 51,
 //        "stopLine": 60,
 //        "error": "El ancho minimo recomendado es 48"
-//    //},
-//    //{
-//    //    "originalCode": "<Button\r\n                    android:layout_width=\"30dp\"\r\n                    android:layout_height=\"30px\"\r\n                    android:text=\"@string/composeButtonLabel\"\r\n                    android:id=\"@+id/composeButton\"\r\n                    android:layout_below=\"@+id/buttonsLabel\"\r\n                    android:layout_alignLeft=\"@+id/buttonsLabel\"\r\n                    android:nextFocusUp=\"@+id/buttonsLabel\"\r\n                    android:nextFocusDown=\"@+id/checkboxesLabel\"\r\n                    />\r",
-//    //    "code": "<Button\r\n                    android:layout_width=\"30dp\"\r\n                    android:layout_height=\"30px\"\r\n                    android:NOESUN_TEXTO=\"@AAAAAAAA/COMPOSE BUTTON\"\r\n                    android:id=\"@+id/composeButton\"\r\n                    android:layout_below=\"@+id/buttonsLabel\"\r\n                    android:layout_alignLeft=\"@+id/buttonsLabel\"\r\n                    android:nextFocusUp=\"@+id/buttonsLabel\"\r\n                    android:nextFocusDown=\"@+id/checkboxesLabel\"\r\n                    />\r",
-//    //    "startIndex": 2491,
-//    //    "startLine": 51,
-//    //    "stopLine": 60,
-//    //    "error": "El ancho minimo recomendado es 48"
+//    },
+//    {
+//        "originalCode": "<Button\r\n                    android:layout_width=\"30dp\"\r\n                    android:layout_height=\"30px\"\r\n                    android:text=\"@string/composeButtonLabel\"\r\n                    android:id=\"@+id/composeButton\"\r\n                    android:layout_below=\"@+id/buttonsLabel\"\r\n                    android:layout_alignLeft=\"@+id/buttonsLabel\"\r\n                    android:nextFocusUp=\"@+id/buttonsLabel\"\r\n                    android:nextFocusDown=\"@+id/checkboxesLabel\"\r\n                    />\r",
+//        "code": "<Button\r\n                    android:layout_width=\"30dp\"\r\n                    android:layout_height=\"30px\"\r\n                    android:NOESUN_TEXTO=\"@AAAAAAAA/COMPOSE BUTTON\"\r\n                    android:id=\"@+id/composeButton\"\r\n                    android:layout_below=\"@+id/buttonsLabel\"\r\n                    android:layout_alignLeft=\"@+id/buttonsLabel\"\r\n                    android:nextFocusUp=\"@+id/buttonsLabel\"\r\n                    android:nextFocusDown=\"@+id/checkboxesLabel\"\r\n                    />\r",
+//        "startIndex": 2491,
+//        "startLine": 51,
+//        "stopLine": 60,
+//        "error": "El ancho minimo recomendado es 48"
 //    }
 //]
-//methods.run(prueba);
+//Blocks.generateBlocks(prueba);
 //Resultado esperado
 //"<Button\r\n
 //android:layout_width=\"WIDTH NUEVO\"\r\n
