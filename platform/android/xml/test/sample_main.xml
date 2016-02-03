@@ -84,8 +84,8 @@ limitations under the License.
             <!-- END_INCLUDE (image_content_description) -->
 
             <ImageButton
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20px"
+                    android:layout_height="20px"
                     android:id="@+id/infoButton"
                     android:layout_alignTop="@+id/discardButton"
                     android:layout_toRightOf="@+id/discardButton"

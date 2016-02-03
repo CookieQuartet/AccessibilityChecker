@@ -57,42 +57,35 @@ module.exports = {
     },
 
     replaceNumericParameterValue: function (code, parameter, numericValue, attribute) {
-        //return code.replace( //TODO: Rehacer el replace.
-        //    code.substring(
-        //        code.indexOf(attribute),
-        //        code.length
-        //    ).match(parameter)[0].match(/\d+/),
-        //    numericValue
-        //);
-        var index = code.indexOf(
-            code.substring(
-                code.indexOf(attribute),
-                code.length
-            ).match(parameter)[0]
-        );
-        var start = code.substring(
-            0,
-            index
-        );
-        var end = code.substring(
-            index+parameter.length,
-            code.length
-        );
-        var text = code.substring(
-            index,
-            index+parameter.length
-        );
-        return start + text.replace(text.match(parameter)[0].match(/\d+/), numericValue) + end; //TODO Probar casos
+        var splittedCode = this.splitText(code, parameter, attribute);
+        return splittedCode[0] + splittedCode[1].replace(splittedCode[1].match(parameter)[0].match(/\d+/), numericValue) + splittedCode[2];
     },
 
     replaceUnitParameterValue: function (code, parameter, unit, attribute) {
-        return code.replace( //TODO Revisar, seguramente tengamos que hacer cambios como en el replaceNumericParameterValue
-            code.substring(
-                code.indexOf(attribute),
-                code.length
-            ).match(parameter)[0].match((/[A-z]\w+/g)),
-            unit
+        var splittedCode = this.splitText(code, parameter, attribute);
+        return splittedCode[0] + splittedCode[1].replace(splittedCode[1].match(parameter)[0].match((/[A-z]\w+/g)), unit) + splittedCode[2];
+    },
+
+    splitText: function(code, parameter, attribute){
+        var indexStartAttribute = code.indexOf(attribute)+attribute.length;
+        var indexStartParameter = indexStartAttribute + code.substring(indexStartAttribute).indexOf(parameter);
+
+        var startText = code.substring(
+            0,
+            indexStartParameter
         );
+
+        var endText = code.substring(
+            indexStartParameter+parameter.length,
+            code.length
+        );
+
+        var text = code.substring(
+            indexStartParameter,
+            indexStartParameter+parameter.length
+        );
+
+        return [startText, text, endText];
     },
 
     addParameter: function (code, parameter) {

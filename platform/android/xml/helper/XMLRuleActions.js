@@ -20,18 +20,18 @@ module.exports = {
         var numericHeightValue = XMLHelper.getNumericValueFromParameter(height);
 
         var result = [];
-        var analyzeSize =  function(parameter, numericValue, minSize, sizeErrorText){
+        var analyzeSize =  function(parameter, numericValue, minSize, sizeErrorText, constant){
             var analyzeResult = [];
             if (numericValue) {
                 var unit = XMLHelper.getUnitValueFromParameter(parameter);
                 if (unit != recommendedUnit) {
-                    code = XMLHelper.replaceUnitParameterValue(codeBlock.code, parameter, recommendedUnit, sizeErrorText);
+                    code = XMLHelper.replaceUnitParameterValue(codeBlock.code, parameter, recommendedUnit, constant);
                     result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
                 }
                 else {
                     if (parseInt(numericValue) < minSize) {
-                        code = XMLHelper.replaceNumericParameterValue(codeBlock.code, parameter, minSize, sizeErrorText);
-                        result.push(Common.resultItem(codeBlock, code, sizeErrorText));
+                        code = XMLHelper.replaceNumericParameterValue(codeBlock.code, parameter, minSize, constant);
+                        result.push(Common.resultItem(codeBlock, code, sizeErrorText+constant));
                     }
                 }
             }
@@ -40,12 +40,12 @@ module.exports = {
         };
 
         if(numericWidthValue){
-            var widthResult = analyzeSize(width, numericWidthValue, minWidth, "El ancho mínimo recomendado es " + XMLConstants.PARAMETERS.LAYOUT_WIDTH);
+            var widthResult = analyzeSize(width, numericWidthValue, minWidth, "El ancho mínimo recomendado es ", XMLConstants.PARAMETERS.LAYOUT_WIDTH);
             result = _.union(result, widthResult);
         }
 
         if(numericHeightValue){
-            var heightResult = analyzeSize( height, numericHeightValue, minHeigth, "La altura mínima recomendada es " + XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
+            var heightResult = analyzeSize( height, numericHeightValue, minHeigth, "La altura mínima recomendada es ", XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
             result = _.union(result, heightResult);
 
         }
