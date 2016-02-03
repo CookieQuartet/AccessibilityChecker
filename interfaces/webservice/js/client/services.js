@@ -147,33 +147,40 @@ angular.module('ac.services', [])
           }, events.onError);
         });
       }
-      function readFileContent(file, callback) {
+      function readFileContent(file, type, callback) {
         fs.root.getFile(file, {}, function(fileEntry) {
           fileEntry.file(function(file) {
-            var reader = new FileReader();
+            var reader = new FileReader(),
+                readMethod = type === 'binary' ? 'readAsArrayBuffer' : 'readAsText';
             reader.onloadend = function(e) {
               callback(this.result);
             };
-            reader.readAsText(file);
+            reader[readMethod](file);
+          }, events.onError);
+        }, events.onError);
+      }
+      function writeFileContent(file, content, callback) {
+        fs.root.getFile(file, {}, function(fileEntry) {
+          fileEntry.createWriter(function(fileWriter) {
+            fileWriter.onwriteend = callback;
+            fileWriter.onerror = callback;
+            //var bb = new Blob([content]);
+            fileWriter.write(new Blob([content]));
           }, events.onError);
         }, events.onError);
       }
       function listFiles(dirEntry) {
         readDirectory(dirEntry, function(entries) {
           if (!entries.length) {
-            $rootScope.$broadcast('ac:file-list', files);
+            //$rootScope.$broadcast('ac:file-list', files);
             return;
           }
           entries.forEach(function(entry, i) {
             if (entry.isDirectory) {
               listFiles(entry);
             } else {
-              console.log(entry.fullPath);
-              files.push({
-                fullPath: entry.fullPath,
-                name: entry.name,
-                entry: entry
-              });
+              //console.log(entry.fullPath);
+              $rootScope.$broadcast('ac:file-item', entry.fullPath);
             }
           });
         });
@@ -214,6 +221,7 @@ angular.module('ac.services', [])
         readDirectory: readDirectory,
         removeDirectoryContent: removeDirectoryContent,
         writeFile: writeFile,
+        writeFileContent: writeFileContent,
         readFileContent: readFileContent,
         listFiles: listFiles,
         processFiles: processFiles,
@@ -257,7 +265,7 @@ angular.module('ac.services', [])
 
       ]
     })
-    .factory('ACSockets', function($socket, $q, $rootScope) {
+    .factory('ACSockets', function($socket, $q) {
       return {
         getProfiles: function() {
           $socket.emit('ac:socket:get_profiles');
@@ -266,10 +274,28 @@ angular.module('ac.services', [])
           $socket.emit('ac:socket:analyze', data);
         },
         process: function(data) {
+          var defer = $q.defer();
           $socket.emit('ac:socket:process', data);
+          return {
+            id: data.blocks[0].fullPath,
+            defer: defer,
+            promise: defer.promise
+          }
         },
         addListener: function(event, handler) {
           $socket.on(event, handler);
         }
       };
+    })
+    .factory('ACZip', function() {
+      var zip = new JSZip();
+      return {
+        addFile: function(path, file) {
+          zip.file(path, file);
+        },
+        getZip: function() {
+          var content = zip.generate({type:"blob"});
+          saveAs(content, "project.zip");
+        }
+      }
     });

@@ -2,6 +2,7 @@ var _ = require('lodash');
 var Q = require('q');
 var profileManager = require('../platform/profiles.js');
 var SourceProcessor = require('./SourceProcessor');
+var SourceMaker = require('./SourceMaker');
 
 //-----------------------------------------------------------------------------------------
 function SocketConnection(io) {
@@ -26,6 +27,8 @@ function SocketConnection(io) {
             item.fullPath = data.fullPath;
             item.extension = data.extension;
             item.selected = false;
+            // onlyHint debe venir en la salida de SourceProcessor
+            item.onlyHint = false;
           });
           socket.emit('ac:socket:analyze_response', _data);
         }
@@ -33,6 +36,8 @@ function SocketConnection(io) {
       //-----------------------------------------------------------------------------------------
       socket.on('ac:socket:process', function (data) {
         // procesar el código
+        // data.code = SourceMaker(data.code, data.blocks);
+        data.code += '<!-- comentario... -->';
         socket.emit('ac:socket:process_response', data);
       });
     });

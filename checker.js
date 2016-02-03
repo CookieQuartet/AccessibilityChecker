@@ -25,10 +25,12 @@ var _ = require('lodash'),
 // Si se habilita el servicio web, el resto de los parámetros se ignora
 //----------------------------------------------------------------------------------------------------------------
 if(argIndex.servicePort > 0) {
+  console.log('----------------------------------------------------------------------------------');
   console.info('Iniciando AccessibilityChecker como servicio web...');
+  console.log('----------------------------------------------------------------------------------');
   console.info('El resto de los parámetros es ignorado');
-  // iniciar el servicio web
-  // ...
+  console.log('----------------------------------------------------------------------------------');
+  // iniciar el servicio web y websockets
   var server = require('./interfaces/webservice/js/server/Webservice')(servicePort);
 
 } else {
