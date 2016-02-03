@@ -129,16 +129,14 @@ module.exports = {
         var result = [];
 
         if (background) {
-            var backgroundValue = XMLHelper.getValueFromParameter(background);
 
-            if (XMLHelper.isHexColor(backgroundValue)) {
+            if (XMLHelper.isHexColor(background)) {
                 var textColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR);
 
                 if (textColor) {
-                    var textColorValue = XMLHelper.getValueFromParameter(textColor);
 
-                    if (XMLHelper.isHexColor(textColorValue)) {
-                        if (!XMLHelper.isValidContrast(backgroundValue, textColorValue)) {
+                    if (XMLHelper.isHexColor(textColor)) {
+                        if (!XMLHelper.isValidContrast(background, textColor)) {
                             result.push(Common.resultItem(codeBlock, "", "El color del texto no hace buen contraste con el color del fondo", true));
                         }
                     }
@@ -147,10 +145,9 @@ module.exports = {
                 var hintColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.HINT_COLOR);
 
                 if (hintColor) {
-                    var hintColorValue = XMLHelper.getValueFromParameter(hintColor);
 
-                    if (XMLHelper.isHexColor(hintColorValue)) {
-                        if (!XMLHelper.isValidContrast(backgroundValue, hintColorValue)) {
+                    if (XMLHelper.isHexColor(hintColor)) {
+                        if (!XMLHelper.isValidContrast(background, hintColor)) {
                             result.push(Common.resultItem(codeBlock, "", "El color del hint no hace buen contraste con el color del fondo", true));
                         }
                     }
