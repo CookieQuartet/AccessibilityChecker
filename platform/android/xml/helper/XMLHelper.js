@@ -1,10 +1,12 @@
 var _ = require('lodash');
 var XMLConstants = require('./XMLConstants.js');
 
+var CCC = require('color-contrast-checker');
+
 module.exports = {
 
     //Retorna el valor del primer parametro encontrado
-    getParameterValue: function (code, parameter) {
+    getParameter: function (code, parameter) {
 
         var parameterIndexOf = code.indexOf(parameter);
 
@@ -33,12 +35,34 @@ module.exports = {
         return null;
     },
 
+    getValueFromParameter: function (parameter) {
+        parameter = this.removeSpaces(parameter);
+
+        var i = code.indexOf("=");
+
+        return parameter.substr(i + 1, parameter.length - 2);
+    },
+
     removeSpaces: function (str) {
         return str.replace(/\s+/g, '');
     },
 
     verifyFirstElement: function (code, element) {
         return code.match(new RegExp('^' + element));
+    },
+
+    verifyFirstElementOnElements: function (code, elements) {
+
+        var i, len;
+
+        for (i = 0, len = elements.length() ; i < len; i++)
+        {
+            if (this.verifyFirstElementOnElement(code, elements[i]))
+            {
+                return true;
+            }
+        }
+        return false;
     },
 
     replaceParameterValue: function (code, parameter, value) {
@@ -80,6 +104,20 @@ module.exports = {
         return code.indexOf(parameter);
     },
 
+    addParameter: function (code, parameter) {
+        var i = code.indexOf(" "); //TODO: ES VALIDO ESTO ?
+        return code.slice(0, i) + parameter + code.slice(i)
+    },
 
+    makeParameter: function (parameterKey, parameterValue) {
+        return parameterKey + "=\"" + parameterValue + "\"";
+    },
 
+    isHexColor: function (color) {
+        return color.charAt(0) == "#";
+    },
+
+    isValidContrast: function (color1, color2) {
+        return new CCC.ColorContrastChecker().isLevelAA(color1, color2, 14);
+    },
 }

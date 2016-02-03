@@ -10,6 +10,22 @@ var profiles = [
       {
         type: 'xml',
         id: 1
+      },
+      {
+        type: 'xml',
+        id: 2
+      },
+      {
+        type: 'xml',
+        id: 3
+      },
+      {
+        type: 'xml',
+        id: 4
+      },
+      {
+        type: 'xml',
+        id: 5
       }
     ]
   }

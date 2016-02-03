@@ -1,6 +1,6 @@
 module.exports = {
 
-  resultItem : function (codeBlock, code, error) {
+  resultItem : function (codeBlock, code, error, onlyHint) {
     return {
       originalCode: codeBlock.code,
       code: code,
@@ -8,8 +8,9 @@ module.exports = {
       endIndex: codeBlock.endIndex,
       startLine: codeBlock.startLine,
       stopLine: codeBlock.stopLine,
-      error: error
+      error: error,
+      onlyHint: onlyHint == 'undefined'  ? false : onlyHint
     }
-  }
+  },
 
 }
