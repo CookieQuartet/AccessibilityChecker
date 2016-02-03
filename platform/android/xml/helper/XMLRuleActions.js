@@ -123,38 +123,21 @@ module.exports = {
 
     analyzeContrast: function(codeBlock) {
         var code = codeBlock.code;
-
         var background = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.BACKGROUND);
-
         var result = [];
 
-        if (background) {
+        if (background && XMLHelper.isHexColor(background)) {
+            var textColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR);
+            if (textColor && XMLHelper.isHexColor(textColor) && !XMLHelper.isValidContrast(background, textColor)) {
+                result.push(Common.resultItem(codeBlock, "", "El color del texto no hace buen contraste con el color del fondo", true));
+            }
 
-            if (XMLHelper.isHexColor(background)) {
-                var textColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR);
-
-                if (textColor) {
-
-                    if (XMLHelper.isHexColor(textColor)) {
-                        if (!XMLHelper.isValidContrast(background, textColor)) {
-                            result.push(Common.resultItem(codeBlock, "", "El color del texto no hace buen contraste con el color del fondo", true));
-                        }
-                    }
-                }
-
-                var hintColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.HINT_COLOR);
-
-                if (hintColor) {
-
-                    if (XMLHelper.isHexColor(hintColor)) {
-                        if (!XMLHelper.isValidContrast(background, hintColor)) {
-                            result.push(Common.resultItem(codeBlock, "", "El color del hint no hace buen contraste con el color del fondo", true));
-                        }
-                    }
-                }
+            var hintColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.HINT_COLOR);
+            if (hintColor && XMLHelper.isHexColor(hintColor) && !XMLHelper.isValidContrast(background, hintColor)) {
+                result.push(Common.resultItem(codeBlock, "", "El color del hint no hace buen contraste con el color del fondo", true));
             }
         }
 
         return result;
     }
-}
+};

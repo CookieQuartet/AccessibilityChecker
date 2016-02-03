@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var XMLConstants = require('./XMLConstants.js');
 
-var CCC = require('color-contrast-checker/src/colorContrastChecker');
+var ColorContrastChecker = require('color-contrast-checker/src/colorContrastChecker');
 
 module.exports = {
 
@@ -86,7 +86,7 @@ module.exports = {
     },
 
     makeParameter: function (parameterKey, parameterValue) {
-        return parameterKey + "=\"" + parameterValue + "\"";
+        return parameterKey + "\"" + parameterValue + "\"";
     },
 
     isHexColor: function (color) {
@@ -94,6 +94,7 @@ module.exports = {
     },
 
     isValidContrast: function (color1, color2) {
-        return new CCC.ColorContrastChecker().isLevelAA(color1, color2, 14);
+        var ccc = new ColorContrastChecker();
+        return ccc.isLevelAA(color1, color2);
     }
 }
