@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var XMLConstants = require('./XMLConstants.js');
 
-var CCC = require('color-contrast-checker');
+var CCC = require('color-contrast-checker/src/colorContrastChecker');
 
 module.exports = {
 
@@ -52,56 +52,47 @@ module.exports = {
     },
 
     verifyFirstElementOnElements: function (code, elements) {
-
-        var i, len;
-
-        for (i = 0, len = elements.length() ; i < len; i++)
-        {
-            if (this.verifyFirstElementOnElement(code, elements[i]))
-            {
-                return true;
-            }
-        }
-        return false;
-    },
-
-    replaceParameterValue: function (code, parameter, value) {
-
-        //TODO REVISAR ESTO
-
-        var quote = code
-
-        var parameterIndexOf = code.indexOf(parameter);
-
-        if(parameterIndexOf  == -1 ) {
-            return {match:false, err: "Sintax error"}; //Parametro no encontrado
-        }
-
-        return code.replace(parameter+applyObject.quote+applyObject.size, value);
+        var that = this;
+        return !_.isEmpty(_.filter(elements, function(element){return that.verifyFirstElement(code, element)}));
     },
 
     replaceNumericParameterValue: function (code, parameter, numericValue, attribute) {
-        return code.replace(
+        //return code.replace( //TODO: Rehacer el replace.
+        //    code.substring(
+        //        code.indexOf(attribute),
+        //        code.length
+        //    ).match(parameter)[0].match(/\d+/),
+        //    numericValue
+        //);
+        var index = code.indexOf(
             code.substring(
                 code.indexOf(attribute),
                 code.length
-            ).match(parameter)[0].match(/\d+/),
-            numericValue
+            ).match(parameter)[0]
         );
+        var start = code.substring(
+            0,
+            index
+        );
+        var end = code.substring(
+            index+parameter.length,
+            code.length
+        );
+        var text = code.substring(
+            index,
+            index+parameter.length
+        );
+        return start + text.replace(text.match(parameter)[0].match(/\d+/), numericValue) + end; //TODO Probar casos
     },
 
     replaceUnitParameterValue: function (code, parameter, unit, attribute) {
-        return code.replace(
+        return code.replace( //TODO Revisar, seguramente tengamos que hacer cambios como en el replaceNumericParameterValue
             code.substring(
                 code.indexOf(attribute),
                 code.length
             ).match(parameter)[0].match((/[A-z]\w+/g)),
             unit
         );
-    },
-
-    getIndexOfParameter: function (code, parameter) {
-        return code.indexOf(parameter);
     },
 
     addParameter: function (code, parameter) {
@@ -119,5 +110,5 @@ module.exports = {
 
     isValidContrast: function (color1, color2) {
         return new CCC.ColorContrastChecker().isLevelAA(color1, color2, 14);
-    },
+    }
 }

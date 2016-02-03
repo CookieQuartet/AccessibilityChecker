@@ -57,7 +57,7 @@ var XMLCodeRules = [
                 return false;
             }
 
-            return XMLRuleActions.checkHarcodedStrings(codeBlock);
+            return XMLRuleActions.checkHardcodedStrings(codeBlock);
         }
     },
 

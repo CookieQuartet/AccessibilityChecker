@@ -39,7 +39,8 @@ limitations under the License.
             element location in the layout. -->
             <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="15dp"
+                    android:textSize="10sp"
                     android:text="Buttons"
                     android:id="@+id/buttonsLabel"
                     android:layout_alignParentTop="true"
@@ -51,6 +52,7 @@ limitations under the License.
             <Button
                     android:layout_width="30dp"
                     android:layout_height="30px"
+                    android:textSize="3sp"
                     android:text="@string/composeButtonLabel"
                     android:id="@+id/composeButton"
                     android:layout_below="@+id/buttonsLabel"

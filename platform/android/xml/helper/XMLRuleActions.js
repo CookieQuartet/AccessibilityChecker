@@ -20,33 +20,34 @@ module.exports = {
         var numericHeightValue = XMLHelper.getNumericValueFromParameter(height);
 
         var result = [];
-
-        if (numericWidthValue) {
-            var widthUnit = XMLHelper.getUnitValueFromParameter(width);
-            if (widthUnit != recommendedUnit) {
-                code = XMLHelper.replaceUnitParameterValue(codeBlock.code, width, recommendedUnit, XMLConstants.PARAMETERS.LAYOUT_WIDTH);
-                result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
-            }
-            else {
-                if (parseInt(numericWidthValue) < minWidth) {
-                    code = XMLHelper.replaceNumericParameterValue(codeBlock.code, width, minWidth, XMLConstants.PARAMETERS.LAYOUT_WIDTH);
-                    result.push(Common.resultItem(codeBlock, code, "El ancho mínimo recomendado es " + minWidth));
+        var analyzeSize =  function(parameter, numericValue, minSize, sizeErrorText){
+            var analyzeResult = [];
+            if (numericValue) {
+                var unit = XMLHelper.getUnitValueFromParameter(parameter);
+                if (unit != recommendedUnit) {
+                    code = XMLHelper.replaceUnitParameterValue(codeBlock.code, parameter, recommendedUnit, sizeErrorText);
+                    result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
+                }
+                else {
+                    if (parseInt(numericValue) < minSize) {
+                        code = XMLHelper.replaceNumericParameterValue(codeBlock.code, parameter, minSize, sizeErrorText);
+                        result.push(Common.resultItem(codeBlock, code, sizeErrorText));
+                    }
                 }
             }
+
+            return analyzeResult;
+        };
+
+        if(numericWidthValue){
+            var widthResult = analyzeSize(width, numericWidthValue, minWidth, "El ancho mÃ­nimo recomendado es " + XMLConstants.PARAMETERS.LAYOUT_WIDTH);
+            result = _.union(result, widthResult);
         }
 
-        if (numericHeightValue) {
-            var heightUnit = XMLHelper.getUnitValueFromParameter(height);
-            if (heightUnit != recommendedUnit) {
-                code = XMLHelper.replaceUnitParameterValue(codeBlock.code, height, recommendedUnit, XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
-                result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
-            }
-            else {
-                if (parseInt(numericHeightValue) < minHeigth) {
-                    code = XMLHelper.replaceNumericParameterValue(codeBlock.code, height, minHeigth, XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
-                    result.push(Common.resultItem(codeBlock, code, "La altura mínima recomendada es " + minHeigth));
-                }
-            }
+        if(numericHeightValue){
+            var heightResult = analyzeSize( height, numericHeightValue, minHeigth, "La altura mÃ­nima recomendada es " + XMLConstants.PARAMETERS.LAYOUT_HEIGHT);
+            result = _.union(result, heightResult);
+
         }
 
         return result;
@@ -74,8 +75,8 @@ module.exports = {
             var textSizeValue = XMLHelper.getNumericValueFromParameter(textSize);
 
             if (parseInt(textSizeValue) < minSize) {
-                code = XMLHelper.replaceNumericParameterValue(codeBlock.code, textSize, minSize, XMLConstants.PARAMETERS.TEXT_SIZE);
-                result.push(Common.resultItem(codeBlock, code, "El tamaño de texto mínimo recomendado es " + minSize));
+                code = XMLHelper.replaceNumericParameterValue(codeBlock.code, textSize, minSize, XMLConstants.PARAMETERS.TEXT_SIZE); //TODO: En el ejemplo inserta sobre android:layout_width
+                result.push(Common.resultItem(codeBlock, code, "El tamaÃ±o de texto mÃ­nimo recomendado es " + minSize));
             }
         }
 
@@ -97,7 +98,7 @@ module.exports = {
         return result;
     },
 
-    checkHarcodedStrings: function(codeBlock) {
+    checkHardcodedStrings: function(codeBlock) {
         var code = codeBlock.code;
 
         var text = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT);
