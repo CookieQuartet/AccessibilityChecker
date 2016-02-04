@@ -49,16 +49,16 @@ module.exports = {
     },
 
     replaceNumericParameterValue: function (code, parameter, numericValue, attribute) {
-        var splittedCode = this.splitText(code, parameter, attribute);
+        var splittedCode = this.splitCode(code, parameter, attribute);
         return splittedCode[0] + splittedCode[1].replace(splittedCode[1].match(parameter)[0].match(/\d+/), numericValue) + splittedCode[2];
     },
 
     replaceUnitParameterValue: function (code, parameter, unit, attribute) {
-        var splittedCode = this.splitText(code, parameter, attribute);
+        var splittedCode = this.splitCode(code, parameter, attribute);
         return splittedCode[0] + splittedCode[1].replace(splittedCode[1].match(parameter)[0].match((/[A-z]\w+/g)), unit) + splittedCode[2];
     },
 
-    splitText: function(code, parameter, attribute){
+    splitCode: function(code, parameter, attribute){
         var indexStartAttribute = code.indexOf(attribute)+attribute.length;
         var indexStartParameter = indexStartAttribute + code.substring(indexStartAttribute).indexOf(parameter);
 
@@ -96,5 +96,14 @@ module.exports = {
     isValidContrast: function (color1, color2) {
         var ccc = new ColorContrastChecker();
         return ccc.isLevelAA(color1, color2);
+    },
+
+    getLine: function(code, attribute, startLine){
+        var codeNewLine = code.substring(
+            0,
+            code.indexOf(attribute)
+        ).match(/\n/g);
+
+        return codeNewLine ? startLine + codeNewLine.length : startLine;
     }
-}
+};

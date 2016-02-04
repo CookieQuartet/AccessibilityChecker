@@ -26,12 +26,12 @@ module.exports = {
                 var unit = XMLHelper.getUnitValueFromParameter(parameter);
                 if (unit != recommendedUnit) {
                     code = XMLHelper.replaceUnitParameterValue(codeBlock.code, parameter, recommendedUnit, constant);
-                    result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
+                    result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit, XMLHelper.getLine(code, constant, codeBlock.startLine), true));
                 }
                 else {
                     if (parseInt(numericValue) < minSize) {
                         code = XMLHelper.replaceNumericParameterValue(codeBlock.code, parameter, minSize, constant);
-                        result.push(Common.resultItem(codeBlock, code, sizeErrorText+minSize+recommendedUnit));
+                        result.push(Common.resultItem(codeBlock, code, sizeErrorText+minSize+recommendedUnit, XMLHelper.getLine(code, constant, codeBlock.startLine)));
                     }
                 }
             }
@@ -68,15 +68,15 @@ module.exports = {
 
         if (textSizeUnit != recommendedUnit) {
             code = XMLHelper.replaceUnitParameterValue(codeBlock.code, textSize, recommendedUnit, XMLConstants.PARAMETERS.TEXT_SIZE);
-            result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit));
+            result.push(Common.resultItem(codeBlock, code, "La unidad recomendada es " + recommendedUnit, XMLHelper.getLine(code, XMLConstants.PARAMETERS.TEXT_SIZE, codeBlock.startLine), true));
         }
         else
         {
             var textSizeValue = XMLHelper.getNumericValueFromParameter(textSize);
 
             if (parseInt(textSizeValue) < minSize) {
-                code = XMLHelper.replaceNumericParameterValue(codeBlock.code, textSize, minSize, XMLConstants.PARAMETERS.TEXT_SIZE); //TODO: En el ejemplo inserta sobre android:layout_width
-                result.push(Common.resultItem(codeBlock, code, "El tamaño de texto mínimo recomendado es " + minSize));
+                code = XMLHelper.replaceNumericParameterValue(codeBlock.code, textSize, minSize, XMLConstants.PARAMETERS.TEXT_SIZE);
+                result.push(Common.resultItem(codeBlock, code, "El tamaño de texto mínimo recomendado es " + minSize, XMLHelper.getLine(code, XMLConstants.PARAMETERS.TEXT_SIZE, codeBlock.startLine)));
             }
         }
 
@@ -92,7 +92,7 @@ module.exports = {
 
         if(!hint) {
             code = XMLHelper.addParameter(codeBlock.code, XMLHelper.makeParameter(XMLConstants.PARAMETERS.HINT , ""));
-            result.push(Common.resultItem(codeBlock, code, "Atributo hint ausente"));
+            result.push(Common.resultItem(codeBlock, code, "Atributo hint ausente", XMLHelper.getLine(code, XMLConstants.PARAMETERS.HINT, codeBlock.startLine)));
         }
 
         return result;
@@ -108,13 +108,13 @@ module.exports = {
 
         if(text) {
             if (text.indexOf(XMLConstants.RES.STRING) == -1) {
-                result.push(Common.resultItem(codeBlock, "", "Se recomienda que el valor del text se encuentre definido en el archivo res/values/strings.xml", true));
+                result.push(Common.resultItem(codeBlock, "", "Se recomienda que el valor del text se encuentre definido en el archivo res/values/strings.xml", XMLHelper.getLine(codeBlock.code, XMLConstants.PARAMETERS.TEXT, codeBlock.startLine), true));
             }
         }
 
         if(hint) {
             if (hint.indexOf(XMLConstants.RES.STRING) == -1) {
-                result.push(Common.resultItem(codeBlock, "", "Se recomienda que el valor del hint se encuentre definido en el archivo res/values/strings.xml", true));
+                result.push(Common.resultItem(codeBlock, "", "Se recomienda que el valor del hint se encuentre definido en el archivo res/values/strings.xml", XMLHelper.getLine(codeBlock.code, XMLConstants.PARAMETERS.HINT, codeBlock.startLine), true));
             }
         }
 
@@ -129,12 +129,12 @@ module.exports = {
         if (background && XMLHelper.isHexColor(background)) {
             var textColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR);
             if (textColor && XMLHelper.isHexColor(textColor) && !XMLHelper.isValidContrast(background, textColor)) {
-                result.push(Common.resultItem(codeBlock, "", "El color del texto no hace buen contraste con el color del fondo", true));
+                result.push(Common.resultItem(codeBlock, "", "El color del texto no hace buen contraste con el color del fondo", codeBlock.startLine, true));
             }
 
             var hintColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.HINT_COLOR);
             if (hintColor && XMLHelper.isHexColor(hintColor) && !XMLHelper.isValidContrast(background, hintColor)) {
-                result.push(Common.resultItem(codeBlock, "", "El color del hint no hace buen contraste con el color del fondo", true));
+                result.push(Common.resultItem(codeBlock, "", "El color del hint no hace buen contraste con el color del fondo", codeBlock.startLine, true));
             }
         }
 

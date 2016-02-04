@@ -1,5 +1,5 @@
 module.exports = {
-    resultItem : function (codeBlock, code, error, onlyHint) {
+    resultItem : function (codeBlock, code, error, specificLine, onlyHint) {
         return {
             originalCode: codeBlock.code,
             code: code,
@@ -8,7 +8,8 @@ module.exports = {
             startLine: codeBlock.startLine,
             stopLine: codeBlock.stopLine,
             error: error,
-            onlyHint: typeof onlyHint == 'undefined'  ? false : onlyHint
+            onlyHint: onlyHint  ? onlyHint: false,
+            specificLine: specificLine ? specificLine : codeBlock.startLine
         }
     }
 };
