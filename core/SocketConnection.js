@@ -36,8 +36,8 @@ function SocketConnection(io) {
       //-----------------------------------------------------------------------------------------
       socket.on('ac:socket:process', function (data) {
         // procesar el código
-        // data.code = SourceMaker(data.code, data.blocks);
-        data.code += '<!-- comentario... -->';
+        data.code = SourceMaker(data.code, data.blocks);
+        //data.code += '<!-- comentario... -->';
         socket.emit('ac:socket:process_response', data);
       });
     });
