@@ -36,7 +36,7 @@ function SourceProcessor(file, options, rules) {
   antlr4.tree.ParseTreeWalker.DEFAULT.walk(listener, tree);
 
   // SourceMaker(...) aplica las modificaciones al código original
-  SourceMaker(file, _.clone(listener.getAccessibilityCheckerResult()));
+  //SourceMaker(file, _.clone(listener.getAccessibilityCheckerResult()));
 
   return listener.getAccessibilityCheckerResult();
 

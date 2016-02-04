@@ -8,7 +8,7 @@ module.exports = {
             startLine: codeBlock.startLine,
             stopLine: codeBlock.stopLine,
             error: error,
-            onlyHint: onlyHint == 'undefined'  ? false : onlyHint //TODO: Es necesario el == 'undefined' ? Porque lo que enviamos es un booleano o nada, y seria mejor onlyHint ? true : false
+            onlyHint: typeof onlyHint == 'undefined'  ? false : onlyHint
         }
     }
 };

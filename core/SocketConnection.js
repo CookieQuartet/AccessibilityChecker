@@ -28,7 +28,7 @@ function SocketConnection(io) {
             item.extension = data.extension;
             item.selected = false;
             // onlyHint debe venir en la salida de SourceProcessor
-            item.onlyHint = false;
+            //item.onlyHint = false;
           });
           socket.emit('ac:socket:analyze_response', _data);
         }

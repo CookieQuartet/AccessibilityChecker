@@ -31,7 +31,7 @@ module.exports = {
                 else {
                     if (parseInt(numericValue) < minSize) {
                         code = XMLHelper.replaceNumericParameterValue(codeBlock.code, parameter, minSize, constant);
-                        result.push(Common.resultItem(codeBlock, code, sizeErrorText+constant));
+                        result.push(Common.resultItem(codeBlock, code, sizeErrorText+minSize+recommendedUnit));
                     }
                 }
             }
