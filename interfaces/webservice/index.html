@@ -77,7 +77,6 @@
                                 <div flex="5" style="min-width: 60px;">
                                     <div>
                                         <img
-                                            ng-if="!item.onlyHint"
                                             alt="{{ 'img/' + item.extension + '-small.png' }}"
                                             ng-src="{{ 'img/' + item.extension + '-small.png' }}"
                                             class="md-avatar"
@@ -88,12 +87,12 @@
                                 <div flex="90" layout="column" class="md-exclude">
                                     <h3 flex class="ac-bold">{{ item.name + ':' + item.startLine }}</h3>
                                     <p flex ng-class="{'ac-error': !item.onlyHint, 'ac-hint': item.onlyHint }">{{ item.error }}</p>
-                                    <md-tabs md-dynamic-height md-border-bottom ng-if="!item.onlyHint">
+                                    <md-tabs md-dynamic-height md-border-bottom>
                                         <md-tab label="Original">
                                             <md-content class="md-padding">
                                                 <div hljs source="item.originalCode" language="{{ item.extension }}"></div>                                            </md-content>
                                         </md-tab>
-                                        <md-tab label="Modificado">
+                                        <md-tab label="Modificado" ng-if="!item.onlyHint">
                                             <md-content class="md-padding">
                                                 <div hljs source="item.code" language="{{ item.extension }}"></div>                                            </md-content>
                                         </md-tab>
