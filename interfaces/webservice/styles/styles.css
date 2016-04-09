@@ -1,0 +1,183 @@
+body {
+    background: lightblue;
+}
+
+.ac-content {
+    background: lightblue;
+    padding-bottom: 32px;
+}
+
+
+#ac-select-project {
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.ac-frame-height {
+    /*height: 100px;*/
+}
+
+.ac-config-first-row {
+    padding-top:10px;
+    width:100%;
+}
+
+.ac-config-first-row button {
+    width:200px;
+}
+
+.ac md-whiteframe {
+    background: #fff;
+    width: 80%;
+    margin: 10px 0;
+}
+
+md-whiteframe.ac-dragdrop  {
+    margin: 30px;
+}
+
+.ac-dragdrop-frame {
+
+}
+
+.ac-project-config {
+    padding-top: 20px !important;
+}
+
+#folder-selector {
+    opacity: 0;
+    position: relative;
+    width: 0;
+
+}
+
+.ac-dragdrop-active {
+    /*border:1px solid blue;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;*/
+}
+
+.ac-clickable,
+.ac-clickable input {
+    cursor: hand;
+    cursor: pointer;
+}
+
+.ac-bold {
+    font-weight: bold !important;
+}
+
+.ac-results-list-container {
+    /*height: 370px;*/
+    max-height: 80%;
+}
+
+.ac-results-list .md-list-item-text {
+    margin:10px 0 !important;
+}
+
+/*.ac-clickable,*/
+#ac-select-project,
+.ac-platform-selector,
+.ac-profile-selector {
+    margin-right: 15px;
+    margin-left: 15px;
+    min-width:20%;
+    width:30%;
+}
+
+.ac-buttonpad {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: lightblue !important;
+}
+
+.ac-apply-button {
+    margin-right:0 !important;
+}
+
+.ac-select-all-button {
+
+}
+
+.ac-results-list h3 {
+
+}
+
+.ac-results-list pre {
+    width: 90%;
+    max-width: 800px;
+    overflow: auto;
+}
+
+.ac-ok-message,
+.ac-empty-message {
+    height: 200px;
+}
+
+#ac-file-content {
+    width:900px;
+    height:400px;
+    overflow: auto;
+    resize: none;
+}
+
+.hljs-line-numbers {
+    text-align: right;
+    border-right: 1px solid #ccc;
+    color: #999;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div[hljs] {
+    line-height: initial;
+}
+
+.ac-ok {
+    text-align: center;
+    border: 1px solid green;
+    background: lightgreen;
+    color: green;
+}
+
+.ac-warn {
+    text-align: center;
+    border: 1px solid orange;
+    background: lightyellow;
+}
+
+.ac-error {
+    border: 1px solid red;
+    background: lightpink;
+    color:red !important;
+}
+
+.ac-hint,
+.ac-ok,
+.ac-error,
+.ac-warn {
+    /*color: black !important;*/
+    padding: 8px !important;
+    margin-top: 16px !important;
+}
+
+.ac-highlight-line {
+    font-weight: bold;
+    background: lightpink;
+}
+
+.ac-hint {
+    border: 1px solid orange;
+    background: lightyellow;
+    color:orange !important;
+}
+
+.ac-content-onlyhint {
+    margin-top:20px;
+}

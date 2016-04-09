@@ -1,14 +1,18 @@
 var _ = require('lodash');
+var Blocks = require('./GenerateBlocks');
+
+
 
 /**
  *
  * @param file
- * @param blocks
+ * @param ACArray
  * @returns {string}
  * @constructor
  */
-function SourceMaker(file, blocks) {
+function SourceMaker(file, ACArray) {
   var originalFile = String(file),
+      blocks = Blocks.generateBlocks(ACArray),
       root = {
         code: file,
         start: 0,

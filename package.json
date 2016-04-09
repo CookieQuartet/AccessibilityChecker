@@ -2,7 +2,7 @@
   "name": "AccessibilityChecker",
   "version": "0.0.0",
   "description": "Accessibility Checker",
-  "main": "index.js",
+  "main": "checker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,7 +23,18 @@
   },
   "homepage": "https://github.com/CookieQuartet/AccessibilityChecker",
   "dependencies": {
+    "angular-highlightjs": "^0.5.1",
     "antlr4": "^4.5.2",
-    "lodash": "^3.9.3"
+    "color-contrast-checker": "^1.2.0",
+    "debug": "^2.2.0",
+    "diff": "^2.2.1",
+    "express": "^4.13.3",
+    "glob": "^5.0.14",
+    "highlight.js": "^9.1.0",
+    "highlightjs-line-numbers.js": "^1.0.2",
+    "lodash": "^3.9.3",
+    "minimatch": "^3.0.0",
+    "q": "^1.4.1",
+    "socket.io": "^1.4.4"
   }
 }

@@ -39,7 +39,8 @@ limitations under the License.
             element location in the layout. -->
             <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="15dp"
+                    android:textSize="10sp"
                     android:text="Buttons"
                     android:id="@+id/buttonsLabel"
                     android:layout_alignParentTop="true"
@@ -49,8 +50,9 @@ limitations under the License.
             <!-- This is a regular, text-based button. No contentDescription is needed, since the
                  text field sufficiently describes the action performed. -->
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30px"
+                    android:textSize="3sp"
                     android:text="@string/composeButtonLabel"
                     android:id="@+id/composeButton"
                     android:layout_below="@+id/buttonsLabel"
@@ -67,8 +69,8 @@ limitations under the License.
             descriptive than usual, such as adding "button" to the end of your description, if
             appropriate. -->
             <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15px"
+                    android:layout_height="30dp"
                     android:id="@+id/discardButton"
                     android:layout_alignTop="@+id/composeButton"
                     android:layout_toRightOf="@+id/composeButton"
@@ -82,8 +84,8 @@ limitations under the License.
             <!-- END_INCLUDE (image_content_description) -->
 
             <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20px"
+                    android:layout_height="20px"
                     android:id="@+id/infoButton"
                     android:layout_alignTop="@+id/discardButton"
                     android:layout_toRightOf="@+id/discardButton"
@@ -147,6 +149,43 @@ limitations under the License.
                     android:nextFocusDown="@+id/partlyCloudImage"
                     />
 
+            <TextView
+                    android:textColor="#FFFFFF"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/imagesAndTextLabel"
+            />
+
+            <TextView
+                    android:textColor="#000000"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/imagesAndTextLabel"
+            />
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:hint="HARRINGUI"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+            />
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+            />
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:hint="@string/P1nCh4"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+            />
+
+
             <!-- Images should have a contentDescription if they convey any meaningful
                  information. Images that are purely decorative may not need a contentDescription,
                  however. -->
@@ -169,7 +208,7 @@ limitations under the License.
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/temperature"
-                    android:textSize="60sp"
+                    android:textSize="60px"
                     android:id="@+id/temperatureText"
                     android:layout_alignTop="@+id/partlyCloudyImage"
                     android:layout_toRightOf="@+id/partlyCloudyImage"

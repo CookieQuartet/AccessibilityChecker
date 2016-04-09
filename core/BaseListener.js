@@ -1,11 +1,18 @@
 var _ = require('lodash');
 var CodeRules = require('./CodeRules');
 
-function BaseListener(rules) {
+/*
+
+Desde el fronend se va a llamar a un metodo que llama a dos metodos:
+          - Primero llama al metodo que procesa los nodos y guarda el accessibilityCheckerResultArray
+          - Por ultimo llama al getAccessibilityCheckerResult que retorna el resultado.
+ */
+
+function BaseListener(rules, mode) {
   antlr4.tree.ParseTreeListener.call(this);
-  this._blocks = [];
-  this._index = 0;
   this.codeRules = new CodeRules(rules);
+  this._accessibilityCheckerResult = [];
+
   return this;
 }
 
@@ -15,65 +22,61 @@ BaseListener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
 
 BaseListener.prototype.constructor = BaseListener;
 
-BaseListener.prototype.addBlock = function(block) {
-  this._blocks.push({
-    index: this._index++,
-    code: block.code,
-    originalCode: block.originalCode,
-    start: block.start,
-    stop: block.stop,
-    children: []
-  });
-};
-
-BaseListener.prototype.getBlocks = function() {
-  return this._blocks;
-};
-
-BaseListener.prototype.clearBlocks = function() {
-  this._blocks = [];
-};
-
-BaseListener.prototype.getCodeBlock = function(ctx) {
-  var start = ctx.start.start,
-      stop = ctx.stop.stop+ 1,
-      code = ctx.start.getInputStream().getText(start, stop);
-  return {
-      start: start,
-      stop: stop,
-      code: code,
-      originalCode: code,
-      ctx: ctx
+BaseListener.prototype.addNodeResult = function(nodeResult) {
+  if (!_.isEmpty(nodeResult)) {
+      //this._accessibilityCheckerResult.push(nodeResult);
+    this._accessibilityCheckerResult = _.union(this._accessibilityCheckerResult, nodeResult);
   }
 };
 
-BaseListener.prototype.loadRules = function(rules) {
-  return this.codeRules.load(rules);
+BaseListener.prototype.getAccessibilityCheckerResult = function() {
+  return this._accessibilityCheckerResult;
 };
 
-BaseListener.prototype.matchRule = function(code, rule) {
-  return true;
+BaseListener.prototype.getCodeBlock = function(ctx) {
+  if(ctx.stop) {
+    var startIndex = ctx.start.start,
+        stopIndex = ctx.stop.stop+ 1,
+        code = ctx.start.getInputStream().getText(startIndex, stopIndex),
+        startLine = ctx.start.line,
+        stopLine = ctx.stop.line;
+    return {
+      code: code,
+      startIndex: startIndex,
+      stopIndex: stopIndex,
+      startLine: startLine,
+      stopLine: stopLine
+
+    }
+  } else {
+    return null;
+  }
 };
 
-BaseListener.prototype.applyRule = function(code, rule) {
-  return rule.apply(code);
+BaseListener.prototype.processRule = function(codeBlock, rule) {
+  return rule.options.action(codeBlock);
 };
 
 BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
   var _self = this,
-      _code = codeBlock.code;
+      _result = [];
+
   _.each(rules, function(rule) {
-    if(_self.matchRule(_code, rule)) {
-      _code = _self.applyRule(_code, rule);
+    var processResult = _self.processRule(codeBlock, rule);
+
+    if (processResult) {
+      _result = _.union(_result, processResult);
     }
   });
-  return _code;
+
+  return _result;
 };
 
 BaseListener.prototype.processNode = function(ctx, ruleCategory) {
   var codeBlock = this.getCodeBlock(ctx);
-  codeBlock.code = this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory));
-  this.addBlock(codeBlock);
+  if(codeBlock) {
+    this.addNodeResult(this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory)));
+  }
 };
 
 module.exports = BaseListener;
