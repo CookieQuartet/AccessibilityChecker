@@ -3,6 +3,34 @@ var _ = require('lodash');
 var profiles = [
   {
     id: 1,
+    name: 'todos',
+    description: 'Todos',
+    platform: 'android',
+    rules: [
+      {
+        type: 'xml',
+        id: 1
+      },
+      {
+        type: 'xml',
+        id: 2
+      },
+      {
+        type: 'xml',
+        id: 3
+      },
+      {
+        type: 'xml',
+        id: 4
+      },
+      {
+        type: 'xml',
+        id: 5
+      }
+    ]
+  },
+  {
+    id: 2,
     name: 'vision_reducida',
     description: 'Visión reducida',
     platform: 'android',
