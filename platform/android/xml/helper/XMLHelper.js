@@ -81,8 +81,10 @@ module.exports = {
     },
 
     addParameter: function (code, parameter) {
-        var i = code.indexOf(" ");
-        return code.slice(0, i) + parameter + "\r\n" + code.slice(i)
+//        var i = code.indexOf(" ");
+//        return code.slice(0, i) + parameter + "\r\n" + code.slice(i)
+        var i = code.indexOf("\r\n");
+        return code.slice(0, i+2) + parameter + "\r\n" + code.slice(i+2)
     },
 
     makeParameter: function (parameterKey, parameterValue) {

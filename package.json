@@ -33,6 +33,7 @@
     "highlight.js": "^9.1.0",
     "highlightjs-line-numbers.js": "^1.0.2",
     "lodash": "^3.9.3",
+    "minimatch": "^3.0.0",
     "q": "^1.4.1",
     "socket.io": "^1.4.4"
   }

@@ -34,18 +34,22 @@ BaseListener.prototype.getAccessibilityCheckerResult = function() {
 };
 
 BaseListener.prototype.getCodeBlock = function(ctx) {
-  var startIndex = ctx.start.start,
-      stopIndex = ctx.stop.stop+ 1,
-      code = ctx.start.getInputStream().getText(startIndex, stopIndex),
-      startLine = ctx.start.line,
-      stopLine = ctx.stop.line;
-  return {
-    code: code,
-    startIndex: startIndex,
-    stopIndex: stopIndex,
-    startLine: startLine,
-    stopLine: stopLine
+  if(ctx.stop) {
+    var startIndex = ctx.start.start,
+        stopIndex = ctx.stop.stop+ 1,
+        code = ctx.start.getInputStream().getText(startIndex, stopIndex),
+        startLine = ctx.start.line,
+        stopLine = ctx.stop.line;
+    return {
+      code: code,
+      startIndex: startIndex,
+      stopIndex: stopIndex,
+      startLine: startLine,
+      stopLine: stopLine
 
+    }
+  } else {
+    return null;
   }
 };
 
@@ -70,7 +74,9 @@ BaseListener.prototype.processCodeRules = function(codeBlock, rules) {
 
 BaseListener.prototype.processNode = function(ctx, ruleCategory) {
   var codeBlock = this.getCodeBlock(ctx);
-  this.addNodeResult(this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory)));
+  if(codeBlock) {
+    this.addNodeResult(this.processCodeRules(codeBlock, this.codeRules.getRules(ruleCategory)));
+  }
 };
 
 module.exports = BaseListener;

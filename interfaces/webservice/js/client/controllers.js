@@ -8,6 +8,10 @@ angular.module('ac.controllers', ['ngMaterial'])
 
       $scope.methods = {
         analyze: function() {
+          // asumo que si no hay errores está todo ok
+          $scope.data.projectOK = true;
+          // reseteo la lista de items
+          $scope.data.items = [];
           // reseteo la lista de archivos
           $scope.data.files = [];
           // Genero un listado de TODOS los archivos del proyecto
@@ -89,16 +93,29 @@ angular.module('ac.controllers', ['ngMaterial'])
         },
         pickProject: function() {
           $rootScope.$broadcast('ac:pick-project');
+          $scope.data.running = false;
+          $scope.data.projectOK = false;
+        },
+        countSelected: function() {
+          var count = 0;
+          angular.forEach($scope.data.items, function(item) {
+            if(item.selected || item.onlyHint) {
+              count = count + 1;
+            }
+          });
+          $scope.data.itemsSelectedCount = count;
         },
         selectAll: function() {
           angular.forEach($scope.data.items, function(item) {
             item.selected = true;
-          })
+          });
+          $scope.data.itemsSelectedCount = $scope.data.items.length;
         },
         selectNone: function() {
           angular.forEach($scope.data.items, function(item) {
             item.selected = false;
-          })
+          });
+          $scope.data.itemsSelectedCount = 0;
         },
         showCode: function(event, item) {
           event.preventDefault();
@@ -150,9 +167,11 @@ angular.module('ac.controllers', ['ngMaterial'])
           analyzable: false,
           files: [],
           items: [],
+          itemsSelectedCount: 0,
           platform: null,
           profile: null,
           running: false,
+          projectOK: false,
           platforms: [
             {type: 'android', name: 'Android'},
             {type: 'ios', name: 'iOS'},
@@ -191,6 +210,11 @@ angular.module('ac.controllers', ['ngMaterial'])
       ACSockets.addListener('ac:socket:analyze_response', function(data) {
         // agregar a la lista de problemas encontrados
         $scope.data.items = _.union($scope.data.items, data);
+        $scope.data.projectOK = false;
+      });
+      ACSockets.addListener('ac:socket:analyze_response_file_ok', function(data) {
+        $scope.data.running = false;
+
       });
       ACSockets.addListener('ac:socket:process_response', function(data) {
         // sobreescribir en el filesystem el archivo recibido

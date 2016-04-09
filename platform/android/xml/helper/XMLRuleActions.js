@@ -122,17 +122,39 @@ module.exports = {
     },
 
     analyzeContrast: function(codeBlock) {
+        function formatColor(color) {
+            var result = '';
+            switch(true) {
+                case (typeof color == 'string' && (color.replace('#', '')).length == 8):
+                    // quitar el canal alpha del color
+                    result = '#' + color.slice(3);
+                    break;
+                case (typeof color == 'string' && (color.replace('#', '')).length == 3):
+                    // convertir a 6-digit
+                    result = color[0] + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+                    break;
+                default:
+                    result = color;
+            }
+            return result;
+            //return (typeof color == 'string' && (color.replace('#', '')).length == 8) ? '#' + color.slice(3) : color;
+        }
         var code = codeBlock.code;
-        var background = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.BACKGROUND);
+        var background = formatColor(XMLHelper.getParameter(code, XMLConstants.PARAMETERS.BACKGROUND));
+        var textColor = formatColor(XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR));
+        var hintColor = formatColor(XMLHelper.getParameter(code, XMLConstants.PARAMETERS.HINT_COLOR));
         var result = [];
+        //var _helper = '';
+        //var textColor = '', hintColor;
 
         if (background && XMLHelper.isHexColor(background)) {
-            var textColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR);
+            //_helper = formatColor(XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR));
+            //textColor = formatColor(XMLHelper.getParameter(code, XMLConstants.PARAMETERS.TEXT_COLOR));
             if (textColor && XMLHelper.isHexColor(textColor) && !XMLHelper.isValidContrast(background, textColor)) {
                 result.push(Common.resultItem(codeBlock, "", "El color del texto no hace buen contraste con el color del fondo", codeBlock.startLine, true));
             }
 
-            var hintColor = XMLHelper.getParameter(code, XMLConstants.PARAMETERS.HINT_COLOR);
+            //hintColor = formatColor(XMLHelper.getParameter(code, XMLConstants.PARAMETERS.HINT_COLOR));
             if (hintColor && XMLHelper.isHexColor(hintColor) && !XMLHelper.isValidContrast(background, hintColor)) {
                 result.push(Common.resultItem(codeBlock, "", "El color del hint no hace buen contraste con el color del fondo", codeBlock.startLine, true));
             }

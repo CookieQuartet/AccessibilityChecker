@@ -32,11 +32,6 @@ angular.module('ac.directives', [])
           }
 
           var listeners = [
-                scope.$on('ac:read-file', function() {
-                  ACFSServices.readFileContent('/Test/.gradle/1.6/taskArtifacts/cache.properties', 'text', function(content) {
-                    console.log(content);
-                  })
-                }),
                 scope.$on('ac:list-files', function() {
                   $rootScope.$broadcast('ac:file-list', files);
                 }),
